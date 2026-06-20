@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<title>Should I Become a Teacher? A Long-Term Evaluation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #2C2118;
+    --ink-soft: #4C3A2C;
+    --ink-mute: #6E6757;
+    --evergreen: #2F5D50;
+    --living: #3E7363;
+    --gold: #C9923E;
+    --gold-deep: #8C5A14;
+    --gold-soft: #E3B86A;
+    --bronze: #8C5A18;
+    --coral: #D9683A;
+
+    --paper: rgba(255, 251, 243, 0.86);
+    --paper-soft: rgba(255, 248, 236, 0.7);
+    --paper-tint: rgba(255, 245, 230, 0.62);
+    --paper-border: rgba(255, 255, 255, 0.85);
+    --edge: rgba(255, 255, 255, 0.98);
+
+    --shadow: 0 30px 70px -28px rgba(60, 40, 20, 0.5), 0 8px 22px -14px rgba(60, 40, 20, 0.3);
+    --inner: inset 0 1px 0 0 rgba(255, 255, 255, 0.9), inset 0 -1px 1px 0 rgba(120, 80, 30, 0.08);
+
+    --e-glide: cubic-bezier(0.22, 1, 0.36, 1);
+    --e-settle: cubic-bezier(0.16, 1, 0.3, 1);
+    --e-cine: cubic-bezier(0.62, 0.01, 0.18, 1);   /* weighted camera glide */
+    --e-out: cubic-bezier(0.33, 0, 0.12, 1);       /* heavy exit */
+
+    --dir: 1;        /* travel direction: 1 forward, -1 back */
+    --camx: 0px;     /* world camera offset */
+
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+    --s--1: clamp(0.86rem, 0.8rem + 0.3vw, 1rem);
+    --s-0:  clamp(1.04rem, 0.96rem + 0.4vw, 1.2rem);
+    --s-1:  clamp(1.2rem, 1.02rem + 0.9vw, 1.6rem);
+    --s-2:  clamp(1.7rem, 1.3rem + 1.9vw, 2.5rem);
+    --s-3:  clamp(2.2rem, 1.6rem + 3vw, 3.7rem);
+    --s-4:  clamp(3rem, 2rem + 5.4vw, 5.4rem);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; overflow: hidden; }
+  body {
+    font-family: "Inter", system-ui, -apple-system, sans-serif; font-size: var(--s-0); line-height: 1.6; color: var(--ink);
+    background: #8AC2E8; -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; overscroll-behavior: none;
+  }
+
+  /* ---------------- living sky ---------------- */
+  .sky { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--sky, linear-gradient(180deg, #86B6DE 0%, #BFE2E6 46%, #FBEFCB 100%)); transition: background 1.3s ease; }
+  .sky.dawn    { --sky: linear-gradient(180deg, #4E4675 0%, #9D6486 34%, #E58F62 66%, #FAD79E 100%); }
+  .sky.morning { --sky: linear-gradient(180deg, #86B6DE 0%, #BFE2E6 46%, #FBEFCB 100%); }
+  .sky.day     { --sky: linear-gradient(180deg, #8AC2E8 0%, #CDE9E2 48%, #FBF1D8 100%); }
+  .sky.golden  { --sky: linear-gradient(180deg, #E98C58 0%, #F4B468 52%, #FBE2A6 100%); }
+  .sky.sunrise { --sky: linear-gradient(180deg, #E2A98E 0%, #F3C58E 52%, #FBEAC9 100%); }
+
+  .sun { position: absolute; width: clamp(90px, 12vw, 140px); height: clamp(90px, 12vw, 140px); border-radius: 50%; top: 14%; left: 58%; transform: translate(-50%, -50%); background: radial-gradient(circle, #FFF6D8 0%, #FCD98A 58%, rgba(252,217,138,0) 72%); box-shadow: 0 0 90px rgba(255, 226, 150, 0.7); transition: top 1.3s ease, left 1.3s ease, background 1.3s ease; }
+  .sky.dawn .sun    { top: 70%; left: 64%; background: radial-gradient(circle, #FFE9C0 0%, #F4A95E 58%, rgba(244,169,94,0) 72%); }
+  .sky.morning .sun { top: 18%; left: 74%; }
+  .sky.day .sun     { top: 12%; left: 56%; }
+  .sky.golden .sun  { top: 56%; left: 28%; background: radial-gradient(circle, #FFEAC0 0%, #F39E55 58%, rgba(243,158,85,0) 72%); }
+  .sky.sunrise .sun { top: 58%; left: 50%; background: radial-gradient(circle, #FFF0CC 0%, #F6B062 58%, rgba(246,176,98,0) 72%); }
+
+  .star { position: absolute; border-radius: 50%; background: #FFF6E6; opacity: 0; box-shadow: 0 0 6px rgba(255,245,210,0.9); transition: opacity 1.3s ease; animation: tw 4s ease-in-out infinite alternate; }
+  .sky.dawn .star { opacity: 0.85; }
+  @keyframes tw { from { opacity: 0.3; } to { opacity: 0.9; } }
+
+  .cloud { position: absolute; background: rgba(255, 252, 246, 0.92); border-radius: 100px; filter: blur(0.4px); box-shadow: 0 8px 20px rgba(80,80,90,0.08); will-change: transform; }
+  .cloud::before, .cloud::after { content: ""; position: absolute; background: inherit; border-radius: 50%; }
+  .c1 { width: 150px; height: 40px; top: 16%; left: -20%; animation: float1 70s linear infinite; }
+  .c1::before { width: 70px; height: 70px; top: -34px; left: 22px; } .c1::after { width: 54px; height: 54px; top: -24px; left: 78px; }
+  .c2 { width: 120px; height: 32px; top: 30%; left: -25%; animation: float2 96s linear infinite; opacity: 0.85; }
+  .c2::before { width: 56px; height: 56px; top: -28px; left: 18px; } .c2::after { width: 44px; height: 44px; top: -18px; left: 62px; }
+  .c3 { width: 100px; height: 28px; top: 9%; left: -30%; animation: float1 120s linear infinite; opacity: 0.7; }
+  .c3::before { width: 48px; height: 48px; top: -24px; left: 14px; } .c3::after { width: 38px; height: 38px; top: -14px; left: 54px; }
+  @keyframes float1 { to { transform: translateX(150vw); } }
+  @keyframes float2 { to { transform: translateX(160vw); } }
+
+  .bird { position: absolute; width: 18px; height: 10px; left: -6%; opacity: 0.5; animation: fly 30s linear infinite; }
+  .bird svg { width: 100%; height: 100%; }
+  .bird.b2 { animation-duration: 42s; animation-delay: 8s; transform: scale(0.8); }
+  .bird.b3 { animation-duration: 36s; animation-delay: 18s; transform: scale(0.65); }
+  @keyframes fly { 0% { transform: translate(0, 0); } 50% { transform: translate(52vw, -6vh); } 100% { transform: translate(112vw, 2vh); } }
+
+  .farhills { position: absolute; bottom: 0; left: -4%; width: 108%; height: 42%; z-index: 1; transform: translate3d(var(--camx), 0, 0); transition: transform 1.2s var(--e-cine); will-change: transform; }
+  .farhills svg { width: 100%; height: 100%; display: block; }
+  .midhills { position: absolute; bottom: 0; left: -6%; width: 112%; height: 50%; z-index: 1; transform: translate3d(calc(var(--camx) * 1.9), 0, 0); transition: transform 1.2s var(--e-cine); will-change: transform; opacity: 0.5; pointer-events: none; }
+  .midhills svg { width: 100%; height: 100%; display: block; }
+  .grain { position: fixed; inset: 0; z-index: 2; background-image: var(--grain); opacity: 0.045; mix-blend-mode: overlay; pointer-events: none; }
+  .embers { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .ember { position: absolute; bottom: -10px; border-radius: 50%; background: radial-gradient(circle, rgba(255,240,200,0.9), rgba(255,210,150,0)); opacity: 0; animation: rise linear infinite; }
+  @keyframes rise { 0% { transform: translateY(0); opacity: 0; } 14% { opacity: var(--o, 0.5); } 86% { opacity: var(--o, 0.5); } 100% { transform: translateY(-104vh) translateX(var(--dx, 16px)); opacity: 0; } }
+
+  /* ---------------- stage + scenes ---------------- */
+  .stage { position: fixed; inset: 0; z-index: 3; perspective: 1500px; }
+  .scene { position: absolute; inset: 0; display: grid; grid-template-rows: 1fr auto; align-items: center; justify-items: center; padding: clamp(18px, 4vw, 48px) clamp(16px, 5vw, 60px) clamp(150px, 22vh, 230px); opacity: 0; visibility: hidden; pointer-events: none; z-index: 1; overflow-y: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; transition: opacity 0.55s var(--e-cine); }
+  .scene::-webkit-scrollbar { display: none; }
+  .scene.active { opacity: 1; visibility: visible; pointer-events: auto; z-index: 2; }
+  .scene.exit { z-index: 1; opacity: 0; transition: opacity 0.42s var(--e-out); }
+  .tilt { position: relative; z-index: 1; width: 100%; max-width: var(--mw, 700px); transform-style: preserve-3d; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 320ms ease-out; align-self: center; }
+  .scene.wide .tilt { --mw: 940px; }
+
+  .panel { position: relative; border-radius: 28px; padding: clamp(26px, 4vw, 52px); background: var(--paper); -webkit-backdrop-filter: blur(20px) saturate(150%); backdrop-filter: blur(20px) saturate(150%); border: 1px solid var(--paper-border); box-shadow: calc(var(--mx, 0px)) calc(30px + var(--my, 0px)) 72px -28px rgba(50, 32, 14, 0.52), calc(var(--mx, 0px) * 0.4) 8px 22px -14px rgba(60, 40, 20, 0.3), var(--inner); overflow: hidden; isolation: isolate; transition: transform 0.82s var(--e-cine), filter 0.82s var(--e-cine), box-shadow 0.4s ease; }
+  /* layered parallax glide, panel rides mid-depth */
+  .scene.active:not(.run) .panel { transform: translate3d(calc(72px * var(--dir)), 16px, 0); filter: blur(7px); }
+  .scene.active.run .panel { transform: none; filter: none; }
+  .scene.exit .panel { transform: translate3d(calc(-94px * var(--dir)), 0, 0); filter: blur(5px); transition: transform 0.46s var(--e-out), filter 0.46s var(--e-out); }
+  /* specular sheen sweeps across the glass as it settles */
+  .panel::after { content: ""; position: absolute; top: -60%; left: 0; width: 55%; height: 220%; background: linear-gradient(100deg, transparent, rgba(255, 252, 244, 0.6), transparent); transform: translateX(-160%) rotate(9deg); opacity: 0; pointer-events: none; z-index: 6; mix-blend-mode: soft-light; }
+  .scene.active.run .panel::after { animation: sheen 1.25s var(--e-cine) 0.22s 1; }
+  @keyframes sheen { 0% { opacity: 0; transform: translateX(-160%) rotate(9deg); } 26% { opacity: 1; } 100% { opacity: 0; transform: translateX(420%) rotate(9deg); } }
+  .panel.cover::after, .panel.bare::after { display: none; }
+  .panel.bare { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; border: 0; box-shadow: none; overflow: visible; }
+  .panel.cover { background: radial-gradient(60% 68% at 50% 48%, rgba(255,251,242,0.95) 0%, rgba(255,249,236,0.62) 46%, rgba(255,249,236,0) 78%); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); border: 0; box-shadow: none; overflow: visible; }
+  .panel.cover::before { display: none; }
+  .panel::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, var(--edge) 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0) 56%, rgba(255,255,255,0.4) 100%); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+  .panel.bare::before { display: none; }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .panel:not(.bare) { background: rgba(255, 250, 242, 0.96); } }
+
+  .anim { opacity: 0; transform: translateY(32px) scale(0.985); filter: blur(8px); transition: opacity 0.72s var(--e-glide), transform 0.72s var(--e-glide), filter 0.72s var(--e-glide); transition-delay: calc(var(--d, 0) * 90ms); will-change: opacity, transform, filter; }
+  .scene.active.run .anim { opacity: 1; transform: none; filter: none; }
+  .scene.exit .anim { opacity: 0; transform: translateY(-20px) scale(0.99); filter: blur(6px); transition: opacity 0.34s var(--e-glide), transform 0.34s var(--e-glide); transition-delay: 0ms; }
+
+  /* ---------------- type ---------------- */
+  .chapter { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: var(--s--1); letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-deep); margin: 0 0 1em; }
+  .chapter::before { content: ""; width: 26px; height: 1.5px; background: var(--gold-deep); opacity: 0.6; }
+  h1, h2 { font-family: "Fraunces", Georgia, serif; font-weight: 600; line-height: 1.05; letter-spacing: -0.014em; color: var(--ink); margin: 0 0 0.46em; }
+  h1 { font-size: var(--s-4); }
+  h2 { font-size: var(--s-3); }
+  .lead { font-size: var(--s-1); line-height: 1.5; color: var(--ink); margin: 0 0 0.8em; }
+  p { margin: 0 0 1em; color: var(--ink-soft); }
+  .body { color: var(--ink-soft); font-size: var(--s-0); }
+  .center { text-align: center; }
+  .sig { font-family: "Fraunces", serif; font-style: italic; font-weight: 600; font-size: clamp(2rem, 1.3rem + 3vw, 3rem); color: var(--evergreen); line-height: 1; }
+  .title-cover { font-size: clamp(3.4rem, 2.2rem + 7vw, 6.4rem); }
+  .cover-sub { font-family: "Fraunces", serif; font-style: italic; font-weight: 500; color: var(--ink-soft); font-size: var(--s-1); }
+
+  /* flourish */
+  .flourish { display: block; margin: 6px auto 0; width: min(300px, 64%); height: 34px; overflow: visible; }
+  .flourish path { fill: none; stroke: var(--gold-deep); stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 360; stroke-dashoffset: 360; transition: stroke-dashoffset 1.2s var(--e-glide) 0.5s; }
+  .scene.active.run .flourish path { stroke-dashoffset: 0; }
+
+  /* scene illustration band */
+  .illo { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: clamp(190px, 30vh, 320px); z-index: 0; pointer-events: none; transition: transform 0.88s var(--e-cine), opacity 0.6s var(--e-cine), filter 0.7s var(--e-cine); will-change: transform; }
+  .illo svg { width: 100%; height: 100%; display: block; }
+  .scene.active:not(.run) .illo { transform: translate3d(calc(150px * var(--dir)), 0, 0); opacity: 0; filter: blur(4px); }
+  .scene.active.run .illo { transform: none; opacity: 1; filter: none; }
+  .scene.exit .illo { transform: translate3d(calc(-172px * var(--dir)), 0, 0); opacity: 0; filter: blur(3px); transition: transform 0.5s var(--e-out), opacity 0.42s var(--e-out), filter 0.5s var(--e-out); }
+  .scene.active .illo .draw { stroke-dasharray: 600; stroke-dashoffset: 600; animation: drawpath 2.2s var(--e-glide) 0.4s forwards; }
+  @keyframes drawpath { to { stroke-dashoffset: 0; } }
+  .scene.active .illo .pop { transform-box: fill-box; transform-origin: bottom center; animation: pop 0.8s var(--e-settle) backwards; }
+  .scene.active .illo .pop.d1 { animation-delay: 0.5s; } .scene.active .illo .pop.d2 { animation-delay: 0.7s; } .scene.active .illo .pop.d3 { animation-delay: 0.9s; } .scene.active .illo .pop.d4 { animation-delay: 1.1s; }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(0.7); } to { opacity: 1; transform: none; } }
+  .twinkle { animation: tw 3s ease-in-out infinite alternate; }
+  .sway { transform-box: fill-box; transform-origin: bottom center; animation: sway 5s ease-in-out infinite alternate; }
+  @keyframes sway { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
+  .bob { animation: bob 4s ease-in-out infinite alternate; }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+
+  /* structural fact cards */
+  .grid { display: grid; gap: 13px; grid-template-columns: 1fr 1fr; margin-top: 22px; }
+  .fcard { position: relative; padding: 20px 22px 22px; border-radius: 18px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.6); }
+  .fcard .ic { width: 32px; height: 32px; margin-bottom: 12px; display: block; }
+  .fcard .ic svg { width: 32px; height: 32px; fill: none; stroke: var(--evergreen); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .fcard h3 { font-family: "Fraunces", serif; font-size: var(--s-1); font-weight: 600; margin: 0 0 0.3em; color: var(--evergreen); }
+  .fcard p { margin: 0; font-size: var(--s--1); line-height: 1.5; color: var(--ink-soft); }
+
+  /* why spotlight */
+  .why-stage { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 18px; margin-top: 22px; align-items: stretch; }
+  .why-feature { position: relative; padding: clamp(24px, 3vw, 34px); border-radius: 22px; overflow: hidden; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(158deg, rgba(255,253,248,0.95), rgba(255,242,224,0.6)); border: 1px solid rgba(255,255,255,0.75); box-shadow: 0 20px 48px -26px rgba(60,40,20,0.5), var(--inner); }
+  .wf-glow { position: absolute; top: -28%; right: -18%; width: 66%; height: 66%; background: radial-gradient(circle, rgba(227,184,106,0.55), transparent 66%); filter: blur(18px); pointer-events: none; }
+  .wf-num { position: absolute; top: 10px; right: 22px; font-family: "Fraunces", serif; font-weight: 600; font-size: clamp(3.2rem, 2rem + 5vw, 5rem); line-height: 1; color: rgba(47,93,80,0.14); pointer-events: none; }
+  .wf-inner { position: relative; transition: opacity 0.3s var(--e-glide), transform 0.3s var(--e-glide); }
+  .wf-inner.swap { opacity: 0; transform: translateY(12px); }
+  .wf-ic { width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; margin-bottom: 18px; background: linear-gradient(150deg, rgba(62,115,99,0.22), rgba(201,146,62,0.22)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.7); }
+  .wf-ic svg { width: 34px; height: 34px; fill: none; stroke: var(--evergreen); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .wf-title { font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-2); color: var(--evergreen); margin: 0 0 0.4em; line-height: 1.08; }
+  .wf-desc { margin: 0; font-size: var(--s-0); line-height: 1.55; color: var(--ink-soft); }
+  .why-rail { display: flex; flex-direction: column; gap: 7px; justify-content: center; }
+  .wr-item { position: relative; display: flex; align-items: center; gap: 13px; padding: 13px 16px; border-radius: 13px; border: 0; cursor: pointer; background: transparent; text-align: left; font-family: "Inter", sans-serif; color: var(--ink-soft); transition: background 0.3s var(--e-glide), color 0.3s, box-shadow 0.3s; }
+  .wr-item .wn { font-family: "Fraunces", serif; font-weight: 600; font-size: 1rem; color: rgba(80,40,20,0.4); min-width: 24px; transition: color 0.3s; }
+  .wr-item .wt { font-weight: 600; font-size: var(--s--1); line-height: 1.3; }
+  .wr-item::before { content: ""; position: absolute; left: 0; top: 22%; bottom: 22%; width: 3px; border-radius: 3px; background: var(--gold); transform: scaleY(0); transform-origin: center; transition: transform 0.3s var(--e-glide); }
+  .wr-item:hover { background: rgba(255,255,255,0.5); }
+  .wr-item.active { background: rgba(255,253,248,0.92); color: var(--evergreen); box-shadow: 0 10px 24px -16px rgba(60,40,20,0.45); }
+  .wr-item.active .wn { color: var(--gold-deep); }
+  .wr-item.active::before { transform: scaleY(1); }
+
+  /* chart */
+  svg.chart { width: 100%; height: auto; display: block; margin-top: 6px; }
+  .chart .grid-l { stroke: rgba(70, 45, 20, 0.16); stroke-width: 1; }
+  .chart .axis { fill: var(--ink-soft); font-family: "Inter"; font-size: 16px; }
+  .chart .line { fill: none; stroke: var(--evergreen); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .chart .area { fill: url(#ag); opacity: 0; transition: opacity 0.6s var(--e-glide) 0.3s; }
+  .chart .area.on { opacity: 1; }
+  .chart .dot { fill: #fff; stroke: var(--gold-deep); stroke-width: 3; }
+  .chart .dotlab { fill: var(--ink); font-family: "Inter"; font-weight: 600; font-size: 17px; }
+  .comet { fill: var(--gold); }
+  .caps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 22px; }
+  .cap { padding: 14px 12px; border-radius: 14px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.5); text-align: center; }
+  .cap b { display: block; font-family: "Fraunces", serif; font-size: var(--s-1); color: var(--evergreen); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cap span { font-size: 0.78rem; color: var(--ink-soft); }
+
+  /* comp table */
+  .ctable { margin-top: 18px; }
+  .crow { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 14px 6px; border-bottom: 1px solid rgba(120,80,30,0.14); }
+  .crow:last-child { border-bottom: 0; }
+  .crow .cben { color: var(--ink); }
+  .crow .cval { font-family: "Fraunces", serif; font-weight: 600; color: var(--evergreen); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .crow.head { border-bottom: 1.5px solid rgba(120,80,30,0.26); }
+  .crow.head .cben, .crow.head .cval { font-family: "Inter"; font-weight: 600; font-size: var(--s--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+  .cfoot { margin-top: 14px; font-size: var(--s--1); color: var(--ink-soft); }
+  /* q & a */
+  .qa { display: grid; gap: 13px; margin-top: 20px; }
+  .qacard { padding: 20px 22px; border-radius: 18px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.55); }
+  .qacard .q { font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-1); color: var(--evergreen); margin: 0 0 0.4em; }
+  .qacard .a { margin: 0; font-size: var(--s-0); line-height: 1.55; color: var(--ink-soft); }
+
+  /* model */
+  .seg { position: relative; display: flex; padding: 6px; border-radius: 999px; background: rgba(120, 75, 30, 0.1); border: 1px solid rgba(255,255,255,0.5); margin: 22px 0 24px; }
+  .seg .thumb { position: absolute; top: 6px; bottom: 6px; left: 6px; width: calc((100% - 12px) / 3); border-radius: 999px; background: var(--paper); box-shadow: 0 6px 16px -8px rgba(60,40,20,0.5), var(--inner); transition: transform 0.5s var(--e-glide); }
+  .seg button { flex: 1; z-index: 1; padding: 13px 6px; min-height: 46px; background: none; border: 0; cursor: pointer; font-family: "Inter"; font-weight: 600; font-size: var(--s--1); color: var(--ink-mute); transition: color 0.5s var(--e-glide); }
+  .seg button[aria-selected="true"] { color: var(--evergreen); }
+  .rows { display: grid; gap: 0; }
+  .row { display: flex; align-items: baseline; justify-content: space-between; padding: 12px 4px; border-bottom: 1px solid rgba(120,75,30,0.14); }
+  .row.hide { display: none; }
+  .row .lab { color: var(--ink-soft); font-size: var(--s--1); }
+  .row .v { font-weight: 600; font-variant-numeric: tabular-nums; font-size: var(--s-0); }
+  .row .v.minus { color: var(--bronze); }
+  .childbox { margin: 16px 4px 2px; } .childbox.hide { display: none; }
+  .childbox .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .childbox .top span:first-child { color: var(--ink-soft); font-size: var(--s--1); }
+  .childbox .cc { font-weight: 600; color: var(--bronze); font-variant-numeric: tabular-nums; }
+  input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 44px; background: transparent; cursor: pointer; margin: 0; }
+  input[type="range"]::-webkit-slider-runnable-track { height: 8px; border-radius: 99px; background: linear-gradient(90deg, var(--gold) 0 var(--fill, 50%), rgba(120,75,30,0.22) var(--fill, 50%) 100%); }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -10px; border-radius: 50%; background: #fff; box-shadow: 0 2px 10px rgba(60,40,20,0.4), 0 0 0 6px rgba(201,146,62,0.25); transition: transform 0.2s var(--e-glide); }
+  input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.12); }
+  input[type="range"]::-moz-range-track { height: 8px; border-radius: 99px; background: rgba(120,75,30,0.22); }
+  input[type="range"]::-moz-range-progress { height: 8px; border-radius: 99px; background: var(--gold); }
+  input[type="range"]::-moz-range-thumb { width: 26px; height: 26px; border: 0; border-radius: 50%; background: #fff; box-shadow: 0 2px 10px rgba(60,40,20,0.4), 0 0 0 6px rgba(201,146,62,0.25); }
+  .readout { margin-top: 22px; padding-top: 20px; border-top: 1px solid rgba(120,75,30,0.16); }
+  .readout .rl { color: var(--ink-soft); font-size: var(--s--1); margin-bottom: 4px; }
+  .big { font-family: "Fraunces", serif; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; color: var(--living); font-size: clamp(2.8rem, 2rem + 5vw, 4.4rem); transition: color 0.5s var(--e-glide); }
+  .big.tight { color: var(--bronze); }
+  .verdict { margin-top: 8px; font-weight: 600; color: var(--living); transition: color 0.5s var(--e-glide); }
+  .verdict.tight { color: var(--bronze); }
+  .gauge { margin-top: 16px; height: 12px; border-radius: 99px; background: rgba(120,75,30,0.18); overflow: hidden; }
+  .gauge .fill { height: 100%; width: 50%; border-radius: 99px; background: linear-gradient(90deg, var(--living), var(--gold-soft)); transition: width 0.5s var(--e-glide), background 0.5s var(--e-glide); }
+  .gauge .fill.tight { background: linear-gradient(90deg, var(--bronze), var(--gold-soft)); }
+  .mnote { margin-top: 18px; color: var(--ink-soft); font-size: var(--s--1); line-height: 1.55; }
+
+  /* floor visual */
+  .floorviz { width: min(380px, 100%); margin: 8px auto 4px; }
+  .ftrack { position: relative; height: 200px; }
+  .fbar { position: absolute; left: 50%; bottom: 36px; width: 112px; height: 20px; transform: translateX(-50%); transform-origin: 50% 100%; border-radius: 16px 16px 7px 7px; background: linear-gradient(180deg, var(--gold-soft), var(--bronze)); box-shadow: 0 0 26px rgba(201,146,62,0.5); }
+  .fbar.held { animation: holdpulse 1.5s var(--e-glide) 1; }
+  @keyframes holdpulse {
+    0% { box-shadow: 0 0 26px rgba(201,146,62,0.5); transform: translateX(-50%) scaleY(1); }
+    30% { box-shadow: 0 0 70px rgba(255,212,132,1), 0 0 132px rgba(255,190,110,0.55); transform: translateX(-50%) scaleY(0.9); }
+    55% { transform: translateX(-50%) scaleY(1.06); }
+    100% { box-shadow: 0 0 32px rgba(201,146,62,0.62); transform: translateX(-50%) scaleY(1); }
+  }
+  .fnum { position: absolute; left: 50%; top: 0; transform: translate(-50%, -128%); font-family: "Fraunces", serif; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--bronze); font-size: clamp(2rem, 1.3rem + 3vw, 3rem); white-space: nowrap; }
+  .fbase { position: absolute; left: 0; right: 0; bottom: 36px; border-top: 2px dashed rgba(110,60,24,0.5); }
+  .fbase span { position: absolute; right: 0; top: 6px; font-size: var(--s--1); color: var(--ink-soft); }
+  .fhold { text-align: center; font-weight: 600; color: var(--bronze); margin-top: 6px; opacity: 0; transition: opacity 0.5s ease; }
+  .fhold.on { opacity: 1; }
+
+  /* honest notes */
+  .honestgrid { display: grid; gap: 11px; grid-template-columns: 1fr 1fr; margin-top: 22px; }
+  .hnote { display: flex; gap: 13px; padding: 16px 18px; border-radius: 15px; background: var(--paper-tint); border-left: 3px solid var(--bronze); }
+  .hnote .ic { flex: 0 0 auto; width: 24px; height: 24px; margin-top: 2px; }
+  .hnote .ic svg { width: 24px; height: 24px; fill: none; stroke: var(--bronze); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .hnote h3 { font-family: "Fraunces", serif; font-size: var(--s-0); font-weight: 600; margin: 0 0 0.2em; color: var(--bronze); }
+  .hnote p { margin: 0; font-size: var(--s--1); line-height: 1.45; color: var(--ink-soft); }
+  .reassure { display: flex; gap: 13px; align-items: flex-start; margin-top: 12px; padding: 16px 18px; border-radius: 15px; background: rgba(62,115,99,0.12); border-left: 3px solid var(--living); }
+  .reassure .ic { flex: 0 0 auto; width: 24px; height: 24px; margin-top: 2px; }
+  .reassure .ic svg { width: 24px; height: 24px; fill: none; stroke: var(--living); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .reassure p { margin: 0; font-size: var(--s--1); line-height: 1.5; color: var(--ink-soft); } .reassure b { color: var(--evergreen); font-weight: 600; }
+
+  .beginbtn { position: relative; overflow: hidden; margin-top: 26px; display: inline-flex; align-items: center; gap: 10px; padding: 15px 32px; border-radius: 999px; border: 0; cursor: pointer; font-family: "Inter"; font-weight: 600; font-size: var(--s-0); color: #fff; background: linear-gradient(135deg, var(--coral), var(--gold-deep)); box-shadow: 0 14px 30px -12px rgba(140, 70, 20, 0.7); transition: transform 0.2s var(--e-glide), box-shadow 0.2s var(--e-glide); }
+  .beginbtn > * { position: relative; z-index: 1; }
+  .beginbtn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -14px rgba(140, 70, 20, 0.8); }
+
+  /* nav */
+  .topbar { position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 20; background: rgba(255,255,255,0.28); }
+  .topbar .fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--gold-soft), #fff); transition: width 0.5s var(--e-glide); box-shadow: 0 0 12px rgba(255, 230, 180, 0.9); }
+  .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 21; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: clamp(14px, 2.4vh, 24px) clamp(16px, 5vw, 44px); pointer-events: none; }
+  .nav > * { pointer-events: auto; }
+  .dots { display: flex; gap: 7px; margin: 0 auto; flex-wrap: wrap; justify-content: center; max-width: 60%; }
+  .dots button { width: 8px; height: 8px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: rgba(255, 250, 238, 0.55); transition: all 0.3s var(--e-glide); }
+  .dots button.on { background: #fff; width: 22px; border-radius: 99px; box-shadow: 0 0 10px rgba(255, 235, 195, 0.8); }
+  .navbtn { display: inline-flex; align-items: center; gap: 9px; padding: 12px 20px; border-radius: 999px; cursor: pointer; font-family: "Inter"; font-weight: 600; font-size: var(--s--1); color: var(--ink); background: var(--paper); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid var(--paper-border); box-shadow: 0 12px 26px -14px rgba(60,40,20,0.5); transition: transform 0.2s var(--e-glide), opacity 0.3s ease; }
+  .navbtn:hover { transform: translateY(-2px); }
+  .navbtn.back { color: var(--ink-soft); }
+  .navbtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .navbtn.ghost { opacity: 0; pointer-events: none; }
+  .hint { position: fixed; left: 50%; transform: translateX(-50%); bottom: clamp(64px, 10vh, 84px); z-index: 19; font-size: var(--s--1); color: rgba(50, 30, 12, 0.66); letter-spacing: 0.02em; transition: opacity 0.5s ease; text-shadow: 0 1px 6px rgba(255,250,235,0.6); }
+
+  :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+
+  .chapter { display: none; }
+  /* wellbeing pull quote */
+  .pullquote { border-left: 3px solid var(--gold); padding-left: 22px; margin: 22px 0; font-family: "Fraunces", serif; font-weight: 500; font-size: clamp(1.6rem, 1.2rem + 2vw, 2.4rem); line-height: 1.22; color: var(--evergreen); letter-spacing: -0.01em; }
+  .panel.solid { background: rgba(255, 251, 244, 0.95); }
+  .glowwin { animation: winpulse 3.6s ease-in-out infinite alternate; }
+  @keyframes winpulse { from { filter: drop-shadow(0 0 2px rgba(252,227,156,0.5)); } to { filter: drop-shadow(0 0 7px rgba(252,227,156,1)); } }
+  /* accordion */
+  .acc { margin-top: 20px; display: grid; gap: 12px; }
+  .acc-item { border-radius: 16px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.55); transition: background 0.3s, box-shadow 0.3s; }
+  .acc-item.open { background: rgba(255,253,248,0.92); box-shadow: 0 12px 28px -18px rgba(60,40,20,0.45); }
+  .acc-q { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; background: none; border: 0; cursor: pointer; text-align: left; font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-1); color: var(--evergreen); line-height: 1.25; }
+  .acc-ic { position: relative; width: 18px; height: 18px; flex: 0 0 auto; }
+  .acc-ic::before, .acc-ic::after { content: ""; position: absolute; background: var(--gold-deep); border-radius: 2px; transition: transform 0.3s var(--e-glide); }
+  .acc-ic::before { left: 0; right: 0; top: 8px; height: 2px; }
+  .acc-ic::after { top: 0; bottom: 0; left: 8px; width: 2px; }
+  .acc-item.open .acc-ic::after { transform: scaleY(0); }
+  .acc-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.42s var(--e-glide); }
+  .acc-item.open .acc-a { grid-template-rows: 1fr; }
+  .acc-inner { overflow: hidden; }
+  .acc-inner p { margin: 0; padding: 0 22px 20px; font-size: var(--s-0); line-height: 1.55; color: var(--ink-soft); }
+  /* sign off */
+  .signoff { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .signoff .rule { width: 42px; height: 1.5px; background: var(--gold-deep); opacity: 0.5; border-radius: 2px; }
+  .signoff .name { font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-1); color: var(--evergreen); }
+  @media (prefers-reduced-motion: reduce) { .glowwin { animation: none !important; } }
+
+  @media (max-width: 640px) {
+    .grid, .honestgrid { grid-template-columns: 1fr; }
+    .why-stage { grid-template-columns: 1fr; }
+    .why-feature { min-height: 250px; }
+    .caps { grid-template-columns: 1fr 1fr; }
+    .navbtn span.lbl { display: none; } .navbtn { padding: 12px 15px; }
+    .dots { max-width: 52%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cloud, .bird, .ember, .sway, .bob, .twinkle, .sun { animation: none !important; }
+    .anim { transition-duration: 0.001ms !important; opacity: 1; transform: none; filter: none; }
+    .tilt { transition: none; }
+    .illo .draw { stroke-dashoffset: 0 !important; animation: none !important; }
+    .illo .pop { animation: none !important; opacity: 1 !important; }
+    .flourish path { stroke-dashoffset: 0; }
+  }
+
+  /* ============ CINEMATIC ATMOSPHERE + LIGHT ============ */
+  /* volumetric god-rays raking from the sun */
+  .rays { position: absolute; top: 14%; left: 58%; width: 165vmax; height: 165vmax; transform: translate(-50%, -50%); pointer-events: none; z-index: 0; opacity: 0; mix-blend-mode: screen; background: conic-gradient(from 0deg, transparent 0deg, rgba(255,243,212,0.13) 3deg, transparent 8deg, transparent 19deg, rgba(255,236,198,0.10) 23deg, transparent 29deg, transparent 41deg, rgba(255,240,206,0.12) 45deg, transparent 51deg, transparent 64deg, rgba(255,238,202,0.09) 68deg, transparent 74deg); -webkit-mask: radial-gradient(circle at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 24%, transparent 55%); mask: radial-gradient(circle at center, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 24%, transparent 55%); transition: opacity 1.3s ease, top 1.3s ease, left 1.3s ease; animation: rayspin 150s linear infinite; will-change: transform; }
+  @keyframes rayspin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+  .sky.dawn .rays    { top: 70%; left: 64%; opacity: 0.5; }
+  .sky.morning .rays { top: 18%; left: 74%; opacity: 0.32; }
+  .sky.day .rays     { top: 12%; left: 56%; opacity: 0.4; }
+  .sky.golden .rays  { top: 56%; left: 28%; opacity: 0.92; }
+  .sky.sunrise .rays { top: 58%; left: 50%; opacity: 0.8; }
+
+  /* anamorphic light streak through the sun at golden hour */
+  .streak { position: absolute; top: 14%; left: 58%; width: 64vw; height: 2px; transform: translate(-50%, -50%); background: linear-gradient(90deg, transparent, rgba(255,238,200,0.7) 50%, transparent); filter: blur(1.4px); opacity: 0; mix-blend-mode: screen; pointer-events: none; z-index: 1; transition: opacity 1.3s ease, top 1.3s ease, left 1.3s ease; }
+  .sky.golden .streak  { top: 56%; left: 28%; opacity: 0.9; }
+  .sky.sunrise .streak { top: 58%; left: 50%; opacity: 0.68; }
+
+  /* dust motes drifting in the light */
+  .motes { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+  .mote { position: absolute; border-radius: 50%; background: radial-gradient(circle, rgba(255,250,234,0.95), rgba(255,244,216,0)); opacity: 0; will-change: transform, opacity; animation: drift linear infinite; }
+  @keyframes drift { 0% { transform: translate(0,0); opacity: 0; } 14% { opacity: var(--mo, 0.5); } 88% { opacity: var(--mo, 0.5); } 100% { transform: translate(var(--mdx, 24px), -92vh); opacity: 0; } }
+
+  /* cinematic vignette + transition bloom */
+  .vignette { position: fixed; inset: 0; z-index: 4; pointer-events: none; background: radial-gradient(125% 96% at 50% 40%, transparent 60%, rgba(38,24,10,0.09) 84%, rgba(28,17,7,0.2) 100%); mix-blend-mode: multiply; }
+  .bloom { position: fixed; inset: 0; z-index: 4; pointer-events: none; opacity: 0; background: radial-gradient(62% 54% at 50% 46%, rgba(255,234,194,0.55), rgba(255,224,180,0) 72%); mix-blend-mode: screen; transition: opacity 0.55s ease; }
+  .bloom.flash { opacity: 1; transition: opacity 0.26s ease; }
+
+  /* ============ PER-PAGE SIGNATURE MOMENTS ============ */
+  /* cover: the name blooms in on a shaft of dawn light */
+  .scene.active.run .panel.cover h1 { animation: titleBloom 2.6s var(--e-glide) 0.35s both; }
+  @keyframes titleBloom { 0% { text-shadow: 0 0 0 rgba(255,224,160,0); } 45% { text-shadow: 0 0 34px rgba(255,221,150,0.75), 0 0 70px rgba(255,206,128,0.4); } 100% { text-shadow: 0 0 20px rgba(255,221,150,0.28); } }
+
+  /* CTA: breathing glow + light sweep */
+  .scene.active.run .beginbtn { animation: ctaBreath 3.4s ease-in-out 1.1s infinite; }
+  @keyframes ctaBreath { 0%,100% { box-shadow: 0 14px 30px -12px rgba(140,70,20,0.7), 0 0 0 rgba(255,200,120,0); } 50% { box-shadow: 0 20px 42px -12px rgba(140,70,20,0.82), 0 0 30px rgba(255,188,108,0.6); } }
+  .beginbtn::after { content: ""; position: absolute; top: 0; left: -85%; width: 55%; height: 100%; background: linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent); transform: skewX(-16deg); pointer-events: none; }
+  .scene.active.run .beginbtn::after { animation: ctaSweep 3.8s ease-in-out 1.5s infinite; }
+  @keyframes ctaSweep { 0% { left: -85%; } 24% { left: 170%; } 100% { left: 170%; } }
+
+  /* why spotlight: living light behind the feature card */
+  .why-feature .wf-glow { animation: whyGlow 8s ease-in-out infinite alternate; will-change: transform, opacity; }
+  @keyframes whyGlow { from { transform: scale(1) rotate(0deg); opacity: 0.72; } to { transform: scale(1.28) rotate(22deg); opacity: 1; } }
+
+  /* chart: glowing comet, blooming milestones, lit totals */
+  .comet { filter: drop-shadow(0 0 7px rgba(255,201,112,0.95)); }
+  .chart .dot { filter: drop-shadow(0 0 5px rgba(201,146,62,0.55)); }
+  .cap b { text-shadow: 0 0 16px rgba(62,115,99,0.16); }
+
+  /* wellbeing: warm bloom on the pull quote */
+  .scene[data-mood="golden"].active.run .pullquote { animation: quoteGlow 3.4s ease-in-out 0.7s 1; }
+  @keyframes quoteGlow { 0%,100% { text-shadow: none; } 50% { text-shadow: 0 0 26px rgba(255,206,136,0.4); } }
+
+  /* epilogue: the name signs off in light */
+  .scene[data-mood="sunrise"].active.run .signoff .name { animation: nameGlow 3.6s ease-in-out 0.9s 1; }
+  @keyframes nameGlow { 0% { text-shadow: none; } 50% { text-shadow: 0 0 28px rgba(255,200,138,0.6); } 100% { text-shadow: 0 0 15px rgba(255,200,138,0.22); } }
+
+  /* ============ MOBILE + REDUCED-MOTION GUARDS ============ */
+  @media (max-width: 640px) {
+    .scene.active:not(.run) .panel { filter: blur(3px); }
+    .scene.exit .panel, .scene.active:not(.run) .illo, .scene.exit .illo { filter: none; }
+    .rays { animation: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel, .illo, .farhills, .midhills, .scene { transition: none !important; }
+    .scene.active:not(.run) .panel, .scene.active.run .panel, .scene.exit .panel,
+    .scene.active:not(.run) .illo, .scene.active.run .illo, .scene.exit .illo { transform: none !important; filter: none !important; opacity: 1 !important; }
+    .scene.exit { opacity: 0 !important; }
+    .rays { animation: none !important; }
+    .mote { display: none !important; }
+    .panel::after, .beginbtn::after { display: none !important; }
+    .scene.active.run .panel.cover h1, .scene.active.run .beginbtn, .why-feature .wf-glow,
+    .scene[data-mood="golden"].active.run .pullquote, .scene[data-mood="sunrise"].active.run .signoff .name { animation: none !important; }
+  }
+
+  /* ============ EVALUATION COMPONENTS ============ */
+  .kicker { display: inline-flex; align-items: center; gap: 11px; font-weight: 600; font-size: var(--s--1); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-deep); margin: 0 0 1em; }
+  .kicker::before { content: ""; width: 26px; height: 1.5px; background: var(--gold-deep); opacity: 0.55; }
+  .title-eval { font-size: clamp(2.7rem, 1.9rem + 4.6vw, 5.2rem); line-height: 1.02; }
+
+  .cover-chips, .chiprow { display: flex; flex-wrap: wrap; gap: 9px; }
+  .cover-chips { justify-content: center; margin: 20px auto 0; max-width: 600px; }
+  .chiprow { margin-top: 10px; }
+  .chip { display: inline-flex; align-items: center; padding: 8px 15px; border-radius: 999px; font-size: var(--s--1); font-weight: 600; color: var(--ink-soft); background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--inner); }
+
+  .grid.grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+  /* pathway */
+  .psteps { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 10px; }
+  .pstep { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 14px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.55); }
+  .pnum { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-family: "Fraunces", serif; font-weight: 600; color: #fff; background: linear-gradient(150deg, var(--living), var(--gold-deep)); box-shadow: 0 6px 14px -6px rgba(60,40,20,0.5); }
+  .ptxt { font-weight: 600; color: var(--ink-soft); font-size: var(--s-0); }
+  .ptimeline { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 22px; border-radius: 16px; background: linear-gradient(135deg, rgba(62,115,99,0.12), rgba(201,146,62,0.12)); border: 1px solid rgba(255,255,255,0.6); }
+  .ptl-label { font-size: var(--s--1); color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; }
+  .ptl-val { font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-1); color: var(--evergreen); }
+
+  /* cost */
+  .costgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin-top: 22px; }
+  .costcard { padding: 22px 20px; border-radius: 18px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.6); display: flex; flex-direction: column; gap: 6px; }
+  .costcard.accent { background: linear-gradient(158deg, rgba(255,253,248,0.95), rgba(255,242,224,0.62)); border-color: rgba(227,184,106,0.5); }
+  .cc-lab { font-size: var(--s--1); color: var(--ink-soft); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cc-val { font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-1); color: var(--evergreen); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .cc-sub { font-size: var(--s--1); color: var(--ink-mute); }
+  .costtotal { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 20px 24px; border-radius: 18px; background: rgba(140,90,24,0.08); border: 1px solid rgba(201,146,62,0.3); }
+  .ct-lab { font-weight: 600; color: var(--ink-soft); font-size: var(--s-0); }
+  .ct-val { font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-2); color: var(--bronze); font-variant-numeric: tabular-nums; }
+  .glowstat { text-shadow: 0 0 22px rgba(201,146,62,0.3); }
+
+  /* benefit chips */
+  .benechips { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 10px; }
+  .bchip { padding: 8px 14px; border-radius: 999px; font-size: var(--s--1); font-weight: 600; color: var(--evergreen); background: rgba(62,115,99,0.1); border: 1px solid rgba(62,115,99,0.18); }
+
+  /* pension calculator */
+  .formula { margin: 20px 0 0; padding: 16px 20px; border-radius: 14px; background: rgba(47,93,80,0.08); border: 1px solid rgba(47,93,80,0.16); font-family: "Fraunces", serif; font-size: var(--s-0); color: var(--evergreen); line-height: 1.5; }
+  .formula span { font-weight: 600; }
+  .formula em { font-style: normal; color: var(--gold-deep); padding: 0 5px; }
+  .pcalc { margin-top: 18px; display: grid; gap: 14px; }
+  .pctrl-top, .pctrl-static { display: flex; align-items: baseline; justify-content: space-between; }
+  .pctrl-top span:first-child { color: var(--ink-soft); font-size: var(--s--1); }
+  .pctrl-static { padding: 12px 2px 2px; border-top: 1px solid rgba(120,75,30,0.14); margin-top: 4px; color: var(--ink-soft); font-size: var(--s--1); }
+  .pctrl-static em { font-style: normal; opacity: 0.65; }
+  .pcv { font-family: "Fraunces", serif; font-weight: 600; color: var(--evergreen); font-variant-numeric: tabular-nums; font-size: var(--s-0); }
+  .penpct { font-family: "Inter"; font-weight: 600; font-size: var(--s--1); color: var(--gold-deep); margin-left: 8px; }
+
+  /* scenario pills */
+  .scenrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .scenpill { padding: 16px 18px; border-radius: 16px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.6); text-align: center; }
+  .scenpill b { display: block; font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-2); color: var(--evergreen); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .scenpill span { font-size: var(--s--1); color: var(--ink-soft); }
+
+  /* 4% rule big stat */
+  .bigstat { margin: 16px auto 8px; }
+  .bs-num { display: block; font-family: "Fraunces", serif; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1; color: var(--bronze); font-size: clamp(3.6rem, 2.4rem + 7vw, 6.4rem); text-shadow: 0 0 42px rgba(201,146,62,0.36); }
+  .bs-cap { display: block; margin-top: 6px; font-size: var(--s-0); color: var(--ink-soft); }
+  .finehint { margin: 18px auto 0; font-size: var(--s--1); color: var(--ink-mute); line-height: 1.5; max-width: 600px; }
+
+  /* floor vs upside */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
+  .split-card { padding: 24px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.65); }
+  .split-card.floor { background: linear-gradient(158deg, rgba(255,253,248,0.95), rgba(236,244,240,0.7)); }
+  .split-card.upside { background: linear-gradient(158deg, rgba(255,250,240,0.95), rgba(255,237,212,0.72)); }
+  .sc-tag { display: inline-block; font-size: var(--s--1); font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-mute); margin-bottom: 8px; }
+  .split-card h3 { font-family: "Fraunces", serif; font-weight: 600; font-size: var(--s-2); margin: 0 0 0.3em; line-height: 1.1; }
+  .split-card.floor h3 { color: var(--evergreen); }
+  .split-card.upside h3 { color: var(--bronze); }
+  .split-card p { margin: 0; font-size: var(--s-0); color: var(--ink-soft); line-height: 1.5; }
+
+  /* big-picture checklist */
+  .bigcheck { list-style: none; margin: 18px auto 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 560px; text-align: left; }
+  .bcheck { display: flex; align-items: center; gap: 12px; padding: 13px 18px; border-radius: 14px; background: var(--paper-tint); border: 1px solid rgba(255,255,255,0.6); font-weight: 600; color: var(--ink); }
+  .bc-ic { flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(150deg, var(--living), var(--gold-deep)); position: relative; box-shadow: 0 0 12px rgba(62,115,99,0.32); }
+  .bc-ic::after { content: ""; position: absolute; left: 7px; top: 5px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+
+  @media (max-width: 760px) { .grid.grid-3 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 720px) { .costgrid { grid-template-columns: 1fr; } }
+  @media (max-width: 680px) { .scenrow, .split { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .bigcheck { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <!-- living sky -->
+  <div class="sky dawn" id="sky">
+    <div class="rays"></div>
+    <div class="sun"></div>
+    <div class="streak"></div>
+    <div class="stars" id="stars"></div>
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+    <div class="bird b1"><svg viewBox="0 0 24 12"><path d="M2 8 Q6 2 12 7 Q18 2 22 8" fill="none" stroke="#5b4a3a" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="bird b2"><svg viewBox="0 0 24 12"><path d="M2 8 Q6 2 12 7 Q18 2 22 8" fill="none" stroke="#5b4a3a" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="bird b3"><svg viewBox="0 0 24 12"><path d="M2 8 Q6 2 12 7 Q18 2 22 8" fill="none" stroke="#5b4a3a" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="farhills">
+      <svg viewBox="0 0 1200 360" preserveAspectRatio="xMidYMax slice">
+        <path d="M0 200 Q200 120 420 180 T840 170 T1200 190 V360 H0 Z" fill="#A9CF93" opacity="0.85"/>
+        <path d="M0 250 Q260 170 540 230 T1080 220 T1200 240 V360 H0 Z" fill="#8FBE7E"/>
+        <path d="M0 300 Q300 240 640 290 T1200 285 V360 H0 Z" fill="#75A96A"/>
+      </svg>
+    </div>
+    <div class="midhills">
+      <svg viewBox="0 0 1200 360" preserveAspectRatio="xMidYMax slice">
+        <path d="M0 318 Q280 262 600 300 T1200 296 V360 H0 Z" fill="#5E8E57"/>
+      </svg>
+    </div>
+  </div>
+  <div class="grain"></div>
+  <div class="embers" id="embers"></div>
+  <div class="motes" id="motes"></div>
+  <div class="vignette"></div>
+  <div class="bloom" id="bloom"></div>
+
+  <div class="topbar"><div class="fill" id="topfill"></div></div>
+
+  <div class="stage" id="stage">
+
+    <!-- 01 COVER -->
+    <section class="scene" data-scene data-mood="dawn">
+      <div class="tilt"><div class="panel cover center">
+        <p class="cover-sub anim" style="--d:0">A long-term evaluation</p>
+        <h1 class="title-cover title-eval anim" style="--d:1">Should I become<br>a teacher?</h1>
+        <svg class="flourish anim" style="--d:2" viewBox="0 0 320 34" aria-hidden="true"><path d="M6 24 C 70 8, 130 8, 180 18 C 224 28, 270 24, 314 12"/></svg>
+        <p class="lead anim" style="--d:3; max-width:610px; margin:16px auto 0;">A clear-eyed look at teaching physical education in California: the financials, the lifestyle, and the retirement it builds, so we can weigh it together with every number on the table.</p>
+        <div class="cover-chips anim" style="--d:4">
+          <span class="chip">Career transition</span><span class="chip">Financial &amp; lifestyle</span><span class="chip">National University pathway</span><span class="chip">SFUSD opportunity</span>
+        </div>
+        <button class="beginbtn anim" style="--d:5" data-next>Walk through it <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      </div></div>
+      <div class="illo" aria-hidden="true">
+        <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMax slice">
+          <path d="M0 150 Q220 70 480 130 T1000 120 T1200 140 V320 H0 Z" fill="#8FBE7E"/>
+          <path d="M0 210 Q300 150 660 200 T1200 195 V320 H0 Z" fill="#6FA463"/>
+          <path class="draw" d="M600 320 C 560 250, 700 220, 660 160 C 630 120, 740 100, 720 70" fill="none" stroke="#F3E2BD" stroke-width="16" stroke-linecap="round"/>
+          <g class="pop d1"><rect x="150" y="150" width="120" height="80" rx="8" fill="#E8A06A"/><path d="M140 150 L210 110 L280 150 Z" fill="#C9572F"/><rect x="190" y="190" width="26" height="40" fill="#7A4B2A"/><rect x="165" y="165" width="22" height="22" rx="3" fill="#FCE3A8"/></g>
+          <g class="pop d2"><rect x="700" y="60" width="86" height="64" rx="6" fill="#E9D6A8"/><path d="M694 60 L743 30 L792 60 Z" fill="#B14A38"/><rect x="735" y="22" width="14" height="20" fill="#9A8050"/><rect x="730" y="14" width="24" height="12" rx="2" fill="#C9572F"/><rect x="718" y="92" width="20" height="32" fill="#7A4B2A"/><rect x="752" y="78" width="16" height="16" rx="2" fill="#FCE3A8"/></g>
+          <g class="sway pop d3"><rect x="980" y="170" width="14" height="50" fill="#7A4B2A"/><circle cx="987" cy="160" r="34" fill="#6FA463"/><circle cx="965" cy="172" r="24" fill="#7FB773"/><circle cx="1010" cy="172" r="24" fill="#7FB773"/></g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 02 WHY (motivation spotlight) -->
+    <section class="scene wide" data-scene data-mood="morning" data-init="why">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">01 / Motivation</p>
+        <h2 class="anim" style="--d:1">Why I'm considering teaching</h2>
+        <p class="lead anim" style="--d:2">The financial case comes later, and it is strong. First, the reasons this is the right work, not just a stable one.</p>
+        <div class="why-stage anim" style="--d:3" id="whyStage">
+          <div class="why-feature">
+            <div class="wf-num" id="wfNum">01</div>
+            <div class="wf-glow"></div>
+            <div class="wf-inner" id="wfInner">
+              <div class="wf-ic" id="wfIc"><svg viewBox="0 0 28 28"><circle cx="9" cy="9" r="3"/><path d="M3.5 22c0-3 2.5-5.5 5.5-5.5S14.5 19 14.5 22"/><circle cx="19" cy="11" r="2.4"/><path d="M15.5 22c0-2.3 1.8-4.2 3.9-4.2s3.9 1.9 3.9 4.2"/></svg></div>
+              <h3 class="wf-title" id="wfTitle">Helping young people</h3>
+              <p class="wf-desc" id="wfDesc">Direct, daily impact on students who need it, the kind of work that actually lands on someone.</p>
+            </div>
+          </div>
+          <div class="why-rail" id="whyRail" role="tablist" aria-label="Reasons for considering teaching"></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 03 WHY PE -->
+    <section class="scene wide" data-scene data-mood="morning">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">02 / Why PE</p>
+        <h2 class="anim" style="--d:1">Why physical education specifically</h2>
+        <p class="lead anim" style="--d:2">Of every subject I could teach, PE lines up most closely with what I already do well.</p>
+        <div class="grid grid-3">
+          <div class="fcard anim" style="--d:3"><span class="ic"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="9"/><path d="M5 14h18M14 5v18M7 7c4 3 10 3 14 0M7 21c4-3 10-3 14 0"/></svg></span><h3>Sport, coaching, education</h3><p>It combines the three things I am best at into one role.</p></div>
+          <div class="fcard anim" style="--d:4"><span class="ic"><svg viewBox="0 0 28 28"><path d="M14 23S5 17.6 5 11.4C5 8.4 7.2 6.2 10 6.2c1.7 0 3.2.9 4 2.2.8-1.3 2.3-2.2 4-2.2 2.8 0 5 2.2 5 5.2 0 1.2-.4 2.3-1 3.3"/><path d="M9 14h3l1.4-2.4L16 17l1.4-3H21"/></svg></span><h3>Lifelong health habits</h3><p>Teaching kids how to move and care for their bodies for life.</p></div>
+          <div class="fcard anim" style="--d:5"><span class="ic"><svg viewBox="0 0 28 28"><path d="M14 5c-3 0-5 2-5 5 0 1.5.6 2.4-.5 4S6 21 8 22s4-1 6-1 4 2 6 1 .5-2-.5-3 .5-2.5.5-4c0-3-2-5-5-5z"/><path d="M14 5v17"/></svg></span><h3>Brain health &amp; wellness</h3><p>It aligns directly with my expertise in brain health and wellness.</p></div>
+          <div class="fcard anim" style="--d:6"><span class="ic"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="9"/><path d="M14 5v18M5 14h18M8 8l12 12M20 8L8 20"/></svg></span><h3>Coaching basketball</h3><p>A built-in path to coach the sport I love, every season.</p></div>
+          <div class="fcard anim" style="--d:7"><span class="ic"><svg viewBox="0 0 28 28"><path d="M14 4l9 3.4v6c0 6.4-4.2 9.2-9 11-4.8-1.8-9-4.6-9-11V7.4z"/><path d="M10.5 14l2.6 2.6L18 11"/></svg></span><h3>Influence beyond academics</h3><p>A positive presence in students' lives that reaches past the classroom.</p></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 04 PATHWAY -->
+    <section class="scene wide" data-scene data-mood="morning">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">03 / The pathway</p>
+        <h2 class="anim" style="--d:1">Becoming a California PE teacher</h2>
+        <p class="lead anim" style="--d:2">The credential runs through <b>National University</b>. The coursework is 100% online, completed alongside work.</p>
+        <ol class="psteps">
+          <li class="pstep anim" style="--d:3"><span class="pnum">1</span><span class="ptxt">Admission requirements</span></li>
+          <li class="pstep anim" style="--d:4"><span class="pnum">2</span><span class="ptxt">Foundational education courses</span></li>
+          <li class="pstep anim" style="--d:5"><span class="pnum">3</span><span class="ptxt">PE methods courses</span></li>
+          <li class="pstep anim" style="--d:6"><span class="pnum">4</span><span class="ptxt">Student teaching or internship</span></li>
+          <li class="pstep anim" style="--d:7"><span class="pnum">5</span><span class="ptxt">CalTPA performance assessment</span></li>
+          <li class="pstep anim" style="--d:8"><span class="pnum">6</span><span class="ptxt">Preliminary teaching credential</span></li>
+        </ol>
+        <div class="ptimeline anim" style="--d:9"><span class="ptl-label">Estimated timeline</span><span class="ptl-val">18 to 24 months</span></div>
+      </div></div>
+    </section>
+
+    <!-- 05 COST -->
+    <section class="scene wide" data-scene data-mood="day">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">04 / Investment</p>
+        <h2 class="anim" style="--d:1">Cost of the transition</h2>
+        <p class="lead anim" style="--d:2">The up-front investment at National University, before the first teaching paycheck.</p>
+        <div class="costgrid">
+          <div class="costcard anim" style="--d:3"><span class="cc-lab">PE Credential</span><span class="cc-val">$26k to $28k</span><span class="cc-sub">Tuition &amp; fees</span></div>
+          <div class="costcard anim" style="--d:4"><span class="cc-lab">Master of Education</span><span class="cc-val">$24k to $25k</span><span class="cc-sub">Tuition &amp; fees</span></div>
+          <div class="costcard accent anim" style="--d:5"><span class="cc-lab">Combined path</span><span class="cc-val">Master's + Credential</span><span class="cc-sub">The route I would take</span></div>
+        </div>
+        <div class="costtotal anim" style="--d:6">
+          <span class="ct-lab">Total investment</span>
+          <span class="ct-val glowstat">$30,000 to $38,000</span>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 06 BEYOND SALARY -->
+    <section class="scene wide" data-scene data-mood="day">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">05 / Compensation</p>
+        <h2 class="anim" style="--d:1">Beyond the salary</h2>
+        <p class="lead anim" style="--d:2">SFUSD's package adds substantial value on top of base pay, every year.</p>
+        <div class="benechips anim" style="--d:3">
+          <span class="bchip">Healthcare: medical, dental, vision</span><span class="bchip">CalSTRS pension</span><span class="bchip">Holidays &amp; summers</span><span class="bchip">PSLF loan forgiveness</span><span class="bchip">Union job security</span>
+        </div>
+        <div class="ctable">
+          <div class="crow head anim" style="--d:4"><span class="cben">Benefit</span><span class="cval">Estimated annual value</span></div>
+          <div class="crow anim" style="--d:5"><span class="cben">Health insurance</span><span class="cval">$8,000 to $15,000</span></div>
+          <div class="crow anim" style="--d:6"><span class="cben">Pension contribution</span><span class="cval">$15,000 to $20,000+</span></div>
+          <div class="crow anim" style="--d:7"><span class="cben">Holidays &amp; summers</span><span class="cval">Significant</span></div>
+          <div class="crow anim" style="--d:8"><span class="cben">Loan forgiveness, PSLF</span><span class="cval">Potentially tens of thousands</span></div>
+        </div>
+        <p class="cfoot anim" style="--d:9">Total compensation is much larger than salary alone.</p>
+      </div></div>
+    </section>
+
+    <!-- 07 SALARY PROGRESSION (chart) -->
+    <section class="scene wide" data-scene data-mood="day" data-init="chart">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">06 / Salary</p>
+        <h2 class="anim" style="--d:1">Salary progression, on a schedule</h2>
+        <p class="lead anim" style="--d:2">Starting near $79,000 with the credential (about $90,000 base with a master's), the contract step increases carry it past $150,000, with no stipends included.</p>
+        <div class="anim" style="--d:3">
+          <svg class="chart" id="chart" viewBox="0 0 900 420" role="img" aria-label="SFUSD base salary rising from 79,000 dollars in year one to over 150,000 dollars in year thirty.">
+            <defs>
+              <linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3E7363" stop-opacity="0.3"/><stop offset="100%" stop-color="#3E7363" stop-opacity="0"/></linearGradient>
+              <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <g id="gridlines"></g>
+            <path class="area" id="cArea" d=""></path>
+            <path class="line" id="cLine" d="" filter="url(#glow)"></path>
+            <circle class="comet" id="comet" r="5" style="opacity:0"></circle>
+            <g id="cDots"></g>
+          </svg>
+        </div>
+        <div class="caps anim" style="--d:4">
+          <div class="cap"><b id="capSal">$0</b><span>Salary, 30 years</span></div>
+          <div class="cap"><b id="capPen">$0</b><span>Pension contributions</span></div>
+          <div class="cap"><b id="capHea">$0</b><span>Healthcare value</span></div>
+          <div class="cap"><b id="capTot">$0</b><span>Total compensation</span></div>
+        </div>
+        <p class="cfoot anim" style="--d:5">For reference, a colleague in year five earns $150,000+ in base salary plus stipends.</p>
+      </div></div>
+    </section>
+
+    <!-- 08 PENSION (interactive calculator) -->
+    <section class="scene wide" data-scene data-mood="day" data-init="pension">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">07 / The pension</p>
+        <h2 class="anim" style="--d:1">Understanding the CalSTRS pension</h2>
+        <p class="lead anim" style="--d:2">A defined-benefit pension, guaranteed for life. Move the inputs to see how it is built.</p>
+        <div class="formula anim" style="--d:3"><span>Annual pension</span> = Years of service <em>×</em> Age factor <em>×</em> Final compensation</div>
+        <div class="pcalc anim" style="--d:4">
+          <div class="pctrl">
+            <div class="pctrl-top"><span>Years of service</span><span class="pcv" id="penYears">38</span></div>
+            <input type="range" id="pyRange" min="20" max="40" step="1" value="38" aria-label="Years of service" />
+          </div>
+          <div class="pctrl">
+            <div class="pctrl-top"><span>Final compensation</span><span class="pcv" id="penComp">$180,000</span></div>
+            <input type="range" id="pcRange" min="100000" max="200000" step="5000" value="180000" aria-label="Final compensation" />
+          </div>
+          <div class="pctrl-static"><span>Age factor &nbsp;<em>retire 65+</em></span><span class="pcv">2.4%</span></div>
+        </div>
+        <div class="readout">
+          <div class="rl">Annual pension <span class="penpct" id="penPct">91.2% of final pay</span></div>
+          <div class="big" id="penAnnual" aria-live="polite">$164,160</div>
+          <div class="verdict" id="penMonthly">About $13,680 / month, guaranteed for life</div>
+          <div class="gauge"><div class="fill" id="penGauge"></div></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 09 MY RETIREMENT SCENARIO -->
+    <section class="scene wide" data-scene data-mood="golden" data-init="retire">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">08 / My scenario</p>
+        <h2 class="anim" style="--d:1">My retirement scenario</h2>
+        <p class="lead anim" style="--d:2">Starting at 32 and retiring at 70: 38 years of service, coaching every year, with a master's and continuing education.</p>
+        <div class="scenrow anim" style="--d:3">
+          <div class="scenpill"><b>32 to 70</b><span>38 years of service</span></div>
+          <div class="scenpill"><b>91.2%</b><span>38 × 2.4% age factor</span></div>
+          <div class="scenpill"><b>~$180k</b><span>Final compensation</span></div>
+        </div>
+        <div class="readout">
+          <div class="rl">Projected annual pension</div>
+          <div class="big" id="retAnnual">$164,000</div>
+          <div class="verdict">About $13,700 / month, guaranteed for life</div>
+        </div>
+        <div class="reassure anim" style="--d:5"><span class="ic"><svg viewBox="0 0 28 28"><path d="M14 4l9 3.4v6c0 6.4-4.2 9.2-9 11-4.8-1.8-9-4.6-9-11V7.4z"/><path d="M10.5 14l2.6 2.6L18 11"/></svg></span><p>If basketball coaching counts toward final compensation (teaching at $180,000 plus a $4,500 stipend), the projection rises to <b>about $168,000 a year, roughly $14,000 a month.</b></p></div>
+      </div></div>
+    </section>
+
+    <!-- 10 WHAT IT'S WORTH (4% rule) -->
+    <section class="scene" data-scene data-mood="golden" data-init="worth">
+      <div class="tilt"><div class="panel center">
+        <p class="kicker anim" style="--d:0">09 / What it's worth</p>
+        <h2 class="anim" style="--d:1">What is that worth?</h2>
+        <p class="lead anim" style="--d:2; max-width:600px; margin:0 auto 0.4em;">Using the 4% rule, generating $168,000 a year from investments would require:</p>
+        <div class="bigstat anim" style="--d:3"><span class="bs-num" id="worthNum">$4.2M</span><span class="bs-cap">in invested assets</span></div>
+        <p class="body anim" style="--d:4; max-width:620px; margin:0 auto;">Teaching creates retirement security equivalent to a <b>$4 to 5 million portfolio</b>, without having to save and invest that sum myself.</p>
+        <p class="finehint anim" style="--d:5">The 4% rule estimates how much you can withdraw from a portfolio each year with a reasonable chance it lasts about 30 years.</p>
+      </div></div>
+    </section>
+
+    <!-- 11 LIFESTYLE -->
+    <section class="scene wide" data-scene data-mood="golden">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">10 / Lifestyle</p>
+        <h2 class="anim" style="--d:1">The life around the work</h2>
+        <p class="lead anim" style="--d:2">Part of the case is how steady and family-friendly the rhythm is.</p>
+        <div class="grid">
+          <div class="fcard anim" style="--d:3"><span class="ic"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="5"/><path d="M14 3v3M14 22v3M3 14h3M22 14h3M6.3 6.3l2 2M19.7 19.7l2 2M21.7 6.3l-2 2M8.3 19.7l-2 2"/></svg></span><h3>Schedule</h3><p>Holidays off, summers off, and a calendar set far in advance.</p></div>
+          <div class="fcard anim" style="--d:4"><span class="ic"><svg viewBox="0 0 28 28"><circle cx="10" cy="9" r="3"/><circle cx="19" cy="11" r="2.4"/><path d="M4 22c0-3 2.7-5.5 6-5.5S16 19 16 22M15.5 22c0-2.3 1.8-4.2 3.9-4.2"/></svg></span><h3>Family</h3><p>Far more availability for children and a better work-life rhythm.</p></div>
+          <div class="fcard anim" style="--d:5"><span class="ic"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="9"/><path d="M14 5v18M5 14h18M8 8l12 12M20 8L8 20"/></svg></span><h3>Coaching</h3><p>A standing opportunity to coach basketball.</p></div>
+          <div class="fcard anim" style="--d:6"><span class="ic"><svg viewBox="0 0 28 28"><path d="M6 22l3-9 5 3 4-10 4 16z"/><path d="M4 22h20"/></svg></span><h3>Entrepreneurship</h3><p>Nights and summers free to keep building on the side.</p></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 12 ENTREPRENEURSHIP -->
+    <section class="scene wide" data-scene data-mood="golden">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">11 / Upside</p>
+        <h2 class="anim" style="--d:1">Entrepreneurship doesn't have to end</h2>
+        <p class="lead anim" style="--d:2">Teaching is the floor, not the ceiling. The schedule leaves real room to keep building.</p>
+        <div class="split anim" style="--d:3">
+          <div class="split-card floor"><span class="sc-tag">Teaching provides</span><h3>A stable floor</h3><p>Predictable income, full benefits, and a pension underneath everything.</p></div>
+          <div class="split-card upside"><span class="sc-tag">[Company Name] can provide</span><h3>Unlimited upside</h3><p>Equity and growth with no ceiling on what it can become.</p></div>
+        </div>
+        <p class="body anim" style="--d:4">Potential side businesses, on nights and summers:</p>
+        <div class="chiprow anim" style="--d:5">
+          <span class="chip">Speaking</span><span class="chip">Coaching</span><span class="chip">Consulting</span><span class="chip">Podcasting</span><span class="chip">[Company Name] equity</span>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 13 CONCERNS -->
+    <section class="scene wide" data-scene data-mood="day">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">12 / Concerns</p>
+        <h2 class="anim" style="--d:1">The honest concerns</h2>
+        <p class="lead anim" style="--d:2">The case is not one-sided. These are the real costs and risks, stated plainly.</p>
+        <div class="honestgrid">
+          <div class="hnote anim" style="--d:3"><span class="ic"><svg viewBox="0 0 28 28"><path d="M5 7h18"/><path d="M14 24V12M9.5 16.5L14 12l4.5 4.5"/></svg></span><div><h3>Financial</h3><p>High Bay Area cost of living, and income growth that is steady but slow.</p></div></div>
+          <div class="hnote anim" style="--d:4"><span class="ic"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="9.5"/><path d="M14 9v5l3.5 2.5"/></svg></span><div><h3>Workload</h3><p>Lesson planning, grading, parent communication, and administrative demands.</p></div></div>
+          <div class="hnote anim" style="--d:5"><span class="ic"><svg viewBox="0 0 28 28"><path d="M4 24h20"/><rect x="8" y="8" width="12" height="16"/><path d="M11.5 12h2M14.5 12h2M11.5 16h2M14.5 16h2M11.5 20h2M14.5 20h2"/></svg></span><div><h3>District challenges</h3><p>SFUSD budget deficits, declining enrollment, and political uncertainty.</p></div></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 14 AFFORDABILITY (household model) -->
+    <section class="scene wide" data-scene data-mood="day" data-init="model">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">13 / Affordability</p>
+        <h2 class="anim" style="--d:1">Could we afford a family?</h2>
+        <p class="lead anim" style="--d:2">The household math, with each scenario laid out, including the cost of childcare in this city.</p>
+        <div class="anim" style="--d:3">
+          <div class="seg" role="tablist" aria-label="Choose a scenario">
+            <div class="thumb" id="segThumb"></div>
+            <button role="tab" aria-selected="true" data-scn="both">Both of us</button>
+            <button role="tab" aria-selected="false" data-scn="floor">My salary alone</button>
+            <button role="tab" aria-selected="false" data-scn="child">With a child</button>
+          </div>
+          <div class="rows">
+            <div class="row" id="rowMichel"><span class="lab">Michel's take-home each month</span><span class="v" id="vMichel">$5,410</span></div>
+            <div class="row" id="rowCollin"><span class="lab">My teaching take-home each month</span><span class="v" id="vCollin">$4,440</span></div>
+            <div class="row"><span class="lab">Housing, fixed</span><span class="v minus">-$3,600</span></div>
+            <div class="row hide" id="rowChild"><span class="lab">Childcare in San Francisco</span><span class="v minus" id="vChild">-$2,500</span></div>
+          </div>
+          <div class="childbox hide" id="childBox">
+            <div class="top"><span>Infant care runs higher or lower</span><span class="cc" id="ccOut">$2,500 / month</span></div>
+            <input type="range" id="ccRange" min="2000" max="3000" step="50" value="2500" aria-label="Monthly childcare cost" aria-valuetext="$2,500 per month" />
+          </div>
+          <div class="readout">
+            <div class="rl">Left each month after housing, to cover everything else</div>
+            <div class="big" id="leftover" aria-live="polite">$6,250</div>
+            <div class="verdict" id="verdict">Comfortable, with room to set money aside.</div>
+            <div class="gauge"><div class="fill" id="gauge"></div></div>
+          </div>
+          <p class="mnote" id="mnote">With both incomes, after housing there is room to live on and still save each month.</p>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 15 STRESS TEST (floor) -->
+    <section class="scene" data-scene data-mood="day" data-init="floor">
+      <div class="tilt"><div class="panel center">
+        <p class="kicker anim" style="--d:0">14 / Stress test</p>
+        <h2 class="anim" style="--d:1">If Michel lost her job</h2>
+        <div class="floorviz anim" style="--d:2">
+          <div class="ftrack">
+            <div class="fbar" id="fbar"><div class="fnum" id="floorNum">$6,250</div></div>
+            <div class="fbase"><span>the floor</span></div>
+          </div>
+          <div class="fhold" id="fhold">tight, and it holds</div>
+        </div>
+        <p class="body anim" style="--d:3; max-width:580px; margin:6px auto 0;">On my teaching salary alone, with take-home around $4,400 a month against $3,600 in housing, the budget gets genuinely tight, the margin is thin, and survival is possible even without emergency savings. That floor is the number that matters most.</p>
+      </div></div>
+    </section>
+
+    <!-- 16 RISKS & QUESTIONS (accordion) -->
+    <section class="scene wide" data-scene data-mood="day">
+      <div class="tilt"><div class="panel">
+        <p class="kicker anim" style="--d:0">15 / Open questions</p>
+        <h2 class="anim" style="--d:1">Risks and open questions</h2>
+        <div class="acc anim" style="--d:2" id="acc">
+          <div class="acc-item open"><button class="acc-q" aria-expanded="true"><span>Are the stipends reliable?</span><span class="acc-ic"></span></button><div class="acc-a"><div class="acc-inner"><p>The ones written into the union contract, like credentials and structural roles, are dependable. Site-specific stipends can shift with budgets, so the plan counts on the contract-backed ones and treats the rest as upside.</p></div></div></div>
+          <div class="acc-item"><button class="acc-q" aria-expanded="false"><span>What if I leave teaching?</span><span class="acc-ic"></span></button><div class="acc-a"><div class="acc-inner"><p>The pension vests at five years; before that, every dollar I contributed is refundable, and the credential is permanent. The downside of trying it is limited.</p></div></div></div>
+          <div class="acc-item"><button class="acc-q" aria-expanded="false"><span>What about strikes?</span><span class="acc-ic"></span></button><div class="acc-a"><div class="acc-inner"><p>Strikes are rare and time-bound, and the union exists precisely to protect pay and conditions. It is short-term disruption, not a structural risk to the career.</p></div></div></div>
+          <div class="acc-item"><button class="acc-q" aria-expanded="false"><span>Is job security sufficient?</span><span class="acc-ic"></span></button><div class="acc-a"><div class="acc-inner"><p>After tenure, union protection makes this among the steadiest jobs available, even with the district's budget pressures.</p></div></div></div>
+          <div class="acc-item"><button class="acc-q" aria-expanded="false"><span>What if entrepreneurship succeeds?</span><span class="acc-ic"></span></button><div class="acc-a"><div class="acc-inner"><p>The teaching schedule leaves nights and summers to build, and if a venture scales I can reassess. The floor does not trap the upside.</p></div></div></div>
+          <div class="acc-item"><button class="acc-q" aria-expanded="false"><span>Will I regret not pursuing business full-time?</span><span class="acc-ic"></span></button><div class="acc-a"><div class="acc-inner"><p>The honest risk. This plan keeps entrepreneurship alive on the side rather than closing the door, so it de-risks the bet instead of abandoning it.</p></div></div></div>
+        </div>
+      </div></div>
+    </section>
+
+    <!-- 17 THE BIG PICTURE -->
+    <section class="scene" data-scene data-mood="sunrise">
+      <div class="tilt"><div class="panel solid center">
+        <p class="kicker anim" style="--d:0">16 / The big picture</p>
+        <h2 class="anim" style="--d:1">The big picture</h2>
+        <p class="lead anim" style="--d:2; max-width:620px; margin:0 auto 0.2em;">Weighing all of it together, here is what teaching offers.</p>
+        <ul class="bigcheck">
+          <li class="bcheck anim" style="--d:3"><span class="bc-ic"></span>Stability</li>
+          <li class="bcheck anim" style="--d:4"><span class="bc-ic"></span>Pension</li>
+          <li class="bcheck anim" style="--d:5"><span class="bc-ic"></span>Healthcare</li>
+          <li class="bcheck anim" style="--d:6"><span class="bc-ic"></span>Family-friendly schedule</li>
+          <li class="bcheck anim" style="--d:7"><span class="bc-ic"></span>Meaningful work</li>
+          <li class="bcheck anim" style="--d:8"><span class="bc-ic"></span>Community impact</li>
+        </ul>
+        <p class="body anim" style="--d:9; max-width:560px; margin:16px auto 0;">A secure foundation, work that matters, and the freedom to keep building on top of it.</p>
+        <div class="signoff anim" style="--d:10"><span class="rule"></span><span class="name">Collin</span></div>
+      </div></div>
+      <div class="illo" aria-hidden="true">
+        <svg viewBox="0 0 1200 320" preserveAspectRatio="xMidYMax slice">
+          <path d="M0 205 Q300 145 640 188 T1200 184 V320 H0 Z" fill="#7BA86E"/>
+          <path d="M0 252 Q320 202 700 242 T1200 238 V320 H0 Z" fill="#5E8E57"/>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <div class="hint" id="hint">Tap the arrow, use your keys, or swipe to turn the page</div>
+
+  <nav class="nav">
+    <button class="navbtn back ghost" id="backBtn" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 18l-6-6 6-6"/></svg><span class="lbl">Back</span></button>
+    <div class="dots" id="dots"></div>
+    <button class="navbtn" id="nextBtn" aria-label="Turn the page"><span class="lbl">Turn the page</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </nav>
+
+<script>
+(function () {
+  "use strict";
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var coarse = matchMedia("(pointer: coarse)").matches;
+
+  /* stars */
+  (function () {
+    var s = document.getElementById("stars");
+    for (var i = 0; i < 26; i++) {
+      var d = document.createElement("span"); d.className = "star";
+      var sz = 1 + Math.random() * 2.4;
+      d.style.width = sz + "px"; d.style.height = sz + "px";
+      d.style.left = (Math.random() * 100) + "%"; d.style.top = (Math.random() * 56) + "%";
+      d.style.animationDelay = (-Math.random() * 4) + "s";
+      s.appendChild(d);
+    }
+  })();
+  /* embers */
+  (function () {
+    if (reduce) return;
+    var wrap = document.getElementById("embers"), n = coarse ? 8 : 13;
+    for (var i = 0; i < n; i++) {
+      var e = document.createElement("span"); e.className = "ember";
+      var size = 2 + Math.random() * 3.5;
+      e.style.width = size + "px"; e.style.height = size + "px"; e.style.left = (Math.random() * 100) + "%";
+      e.style.setProperty("--o", (0.18 + Math.random() * 0.28).toFixed(2));
+      e.style.setProperty("--dx", (Math.random() * 50 - 25) + "px");
+      var dur = 15 + Math.random() * 16; e.style.animationDuration = dur + "s"; e.style.animationDelay = (-Math.random() * dur) + "s";
+      wrap.appendChild(e);
+    }
+  })();
+  /* dust motes drifting in the light */
+  (function () {
+    if (reduce) return;
+    var wrap = document.getElementById("motes"), n = coarse ? 9 : 18;
+    for (var i = 0; i < n; i++) {
+      var m = document.createElement("span"); m.className = "mote";
+      var size = 2 + Math.random() * 4;
+      m.style.width = size + "px"; m.style.height = size + "px";
+      m.style.left = (Math.random() * 100) + "%"; m.style.top = (58 + Math.random() * 48) + "%";
+      m.style.setProperty("--mo", (0.18 + Math.random() * 0.4).toFixed(2));
+      m.style.setProperty("--mdx", (Math.random() * 70 - 35) + "px");
+      var dur = 19 + Math.random() * 22; m.style.animationDuration = dur + "s"; m.style.animationDelay = (-Math.random() * dur) + "s";
+      wrap.appendChild(m);
+    }
+  })();
+
+  var sky = document.getElementById("sky");
+  var stage = document.getElementById("stage");
+  var bloom = document.getElementById("bloom");
+  var camAccum = 0;
+  var scenes = Array.prototype.slice.call(document.querySelectorAll("[data-scene]"));
+  var total = scenes.length, idx = 0, locking = false;
+  var whyTimer = null, whyCur = 0, whyManual = false, whyBuilt = false;
+  var dotsWrap = document.getElementById("dots"), nextBtn = document.getElementById("nextBtn"),
+      backBtn = document.getElementById("backBtn"), topfill = document.getElementById("topfill"), hint = document.getElementById("hint");
+
+  scenes.forEach(function (s, i) {
+    var b = document.createElement("button");
+    b.setAttribute("aria-label", "Go to page " + (i + 1));
+    b.addEventListener("click", function () { goTo(i); });
+    dotsWrap.appendChild(b);
+  });
+  var dotEls = Array.prototype.slice.call(dotsWrap.children);
+
+  function setActive(i) {
+    scenes.forEach(function (s, n) { if (n !== i) s.classList.remove("active", "run", "exit"); });
+    var sc = scenes[i];
+    var mood = sc.getAttribute("data-mood"); if (mood) sky.className = "sky " + mood;
+    sc.classList.add("active");
+    void sc.offsetWidth;
+    requestAnimationFrame(function () { sc.classList.add("run"); });
+    if (whyTimer) { clearInterval(whyTimer); whyTimer = null; }
+    runInit(sc);
+  }
+  function goTo(i) {
+    if (i === idx || locking || i < 0 || i >= total) return;
+    locking = true;
+    var dir = i > idx ? 1 : -1;
+    stage.style.setProperty("--dir", dir);
+    if (!reduce) {
+      /* slow camera dolly across the landscape as the story advances */
+      camAccum = Math.max(-130, Math.min(130, camAccum - dir * 22));
+      sky.style.setProperty("--camx", camAccum + "px");
+      /* warm bloom breathes through the cut */
+      bloom.classList.add("flash");
+      setTimeout(function () { bloom.classList.remove("flash"); }, 270);
+    }
+    var old = scenes[idx];
+    old.classList.add("exit"); old.classList.remove("run");
+    setTimeout(function () { old.classList.remove("active", "exit"); }, 480);
+    idx = i; setActive(idx); updateChrome();
+    setTimeout(function () { locking = false; }, 520);
+    if (hint) hint.style.opacity = "0";
+  }
+  function next() { if (idx < total - 1) goTo(idx + 1); }
+  function prev() { if (idx > 0) goTo(idx - 1); }
+  function updateChrome() {
+    dotEls.forEach(function (d, n) { d.classList.toggle("on", n === idx); });
+    topfill.style.width = ((idx + 1) / total * 100) + "%";
+    backBtn.classList.toggle("ghost", idx === 0);
+    nextBtn.classList.toggle("ghost", idx === total - 1);
+  }
+  nextBtn.addEventListener("click", next);
+  backBtn.addEventListener("click", prev);
+  document.querySelectorAll("[data-next]").forEach(function (b) { b.addEventListener("click", next); });
+  window.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); next(); }
+    else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); prev(); }
+    else if (e.key === " " || e.key === "Enter") { if (document.activeElement && document.activeElement.tagName === "BUTTON") return; e.preventDefault(); next(); }
+  });
+  var tx = 0, ty = 0;
+  window.addEventListener("touchstart", function (e) { tx = e.changedTouches[0].clientX; ty = e.changedTouches[0].clientY; }, { passive: true });
+  window.addEventListener("touchend", function (e) {
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) { if (dx < 0) next(); else prev(); }
+  }, { passive: true });
+
+  var px = 0, py = 0;
+  if (!reduce && !coarse) {
+    window.addEventListener("mousemove", function (e) { px = (e.clientX / window.innerWidth - 0.5); py = (e.clientY / window.innerHeight - 0.5); requestAnimationFrame(applyParallax); });
+  }
+  function applyParallax() {
+    if (locking) return;
+    var t = scenes[idx].querySelector(".tilt");
+    if (t) {
+      t.style.setProperty("--ry", (px * 5).toFixed(2) + "deg");
+      t.style.setProperty("--rx", (-py * 5).toFixed(2) + "deg");
+      t.style.setProperty("--mx", (-px * 34).toFixed(1) + "px");
+      t.style.setProperty("--my", (-py * 16).toFixed(1) + "px");
+    }
+  }
+
+  function money(v) { return "$" + Math.round(v).toLocaleString("en-US"); }
+  function animEl(el, from, to, dur, fmt) {
+    if (el._raf) cancelAnimationFrame(el._raf);
+    if (reduce) { el.textContent = fmt(to); return; }
+    var t0 = performance.now();
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function tick(now) { var t = Math.min(1, (now - t0) / dur); el.textContent = fmt(from + (to - from) * ease(t)); if (t < 1) el._raf = requestAnimationFrame(tick); }
+    el._raf = requestAnimationFrame(tick);
+  }
+
+  function runInit(sc) {
+    var k = sc.getAttribute("data-init");
+    if (k === "chart") setTimeout(drawChart, 360);
+    else if (k === "model") setTimeout(enterModel, 320);
+    else if (k === "floor") setTimeout(enterFloor, 420);
+    else if (k === "why") setTimeout(enterWhy, 360);
+    else if (k === "pension") setTimeout(enterPension, 320);
+    else if (k === "retire") setTimeout(enterRetire, 380);
+    else if (k === "worth") setTimeout(enterWorth, 360);
+  }
+
+  /* ---------- why spotlight ---------- */
+  var WHY = [
+    { n: "01", t: "Helping young people", d: "Direct, daily impact on students who need it, work that actually lands on someone.", ic: '<svg viewBox="0 0 28 28"><circle cx="9" cy="9" r="3"/><path d="M3.5 22c0-3 2.5-5.5 5.5-5.5S14.5 19 14.5 22"/><circle cx="19" cy="11" r="2.4"/><path d="M15.5 22c0-2.3 1.8-4.2 3.9-4.2s3.9 1.9 3.9 4.2"/></svg>' },
+    { n: "02", t: "Teaching health and brain wellness", d: "The chance to teach kids how their bodies and minds work, which is exactly my area of expertise.", ic: '<svg viewBox="0 0 28 28"><path d="M14 23S5 17.6 5 11.4C5 8.4 7.2 6.2 10 6.2c1.7 0 3.2.9 4 2.2.8-1.3 2.3-2.2 4-2.2 2.8 0 5 2.2 5 5.2 0 1.2-.4 2.3-1 3.3"/><path d="M9 14h3l1.4-2.4L16 17l1.4-3H21"/></svg>' },
+    { n: "03", t: "Meaningful work", d: "Days spent on something that matters, not only something that pays.", ic: '<svg viewBox="0 0 28 28"><path d="M14 3.5l3 6.6 7.2.6-5.5 4.7 1.7 7-6.4-3.8-6.4 3.8 1.7-7L3.8 10.7 11 10.1z"/></svg>' },
+    { n: "04", t: "Consistent schedule and family life", d: "A steady weekly rhythm and a calendar we can build a family around.", ic: '<svg viewBox="0 0 28 28"><rect x="5" y="6" width="18" height="17" rx="2"/><path d="M5 11h18M9 4v4M19 4v4"/></svg>' },
+    { n: "05", t: "Long-term financial security", d: "A defined-benefit pension and benefits that quietly compound across a full career.", ic: '<svg viewBox="0 0 28 28"><path d="M14 4l10 3.6v6.2c0 6.7-4.3 9.6-10 11.6-5.7-2-10-4.9-10-11.6V7.6z"/><path d="M14 19v-7M10.5 15L14 11.5 17.5 15"/></svg>' },
+    { n: "06", t: "Community impact", d: "A positive, lasting presence in the neighborhood we live in.", ic: '<svg viewBox="0 0 28 28"><path d="M5 13l9-7 9 7"/><path d="M7 11.5V23h14V11.5"/><path d="M11 23v-5h6v5"/></svg>' }
+  ];
+  var wfNumEl = document.getElementById("wfNum"), wfIc = document.getElementById("wfIc"), wfInner = document.getElementById("wfInner"),
+      wfTitle = document.getElementById("wfTitle"), wfDesc = document.getElementById("wfDesc"), whyRail = document.getElementById("whyRail");
+  function setWhy(i) { var r = WHY[i]; wfNumEl.textContent = r.n; wfIc.innerHTML = r.ic; wfTitle.textContent = r.t; wfDesc.textContent = r.d; }
+  function markWhy(i) { whyRail.querySelectorAll(".wr-item").forEach(function (it, n) { it.classList.toggle("active", n === i); it.setAttribute("aria-selected", n === i ? "true" : "false"); }); }
+  function whySelect(i, manual) {
+    whyCur = i; markWhy(i);
+    if (manual) { whyManual = true; if (whyTimer) { clearInterval(whyTimer); whyTimer = null; } }
+    if (reduce) { setWhy(i); return; }
+    wfInner.classList.add("swap");
+    setTimeout(function () { setWhy(i); wfInner.classList.remove("swap"); }, 250);
+  }
+  function buildWhy() {
+    if (whyBuilt) return; whyBuilt = true;
+    WHY.forEach(function (r, i) {
+      var b = document.createElement("button");
+      b.className = "wr-item"; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", "false");
+      b.innerHTML = '<span class="wn">' + r.n + '</span><span class="wt">' + r.t + '</span>';
+      b.addEventListener("click", function () { whySelect(i, true); });
+      whyRail.appendChild(b);
+    });
+    var stage = document.getElementById("whyStage");
+    stage.addEventListener("mouseenter", function () { if (whyTimer) { clearInterval(whyTimer); whyTimer = null; } });
+    stage.addEventListener("mouseleave", function () { if (!whyManual && scenes[idx].getAttribute("data-init") === "why") startWhyTimer(); });
+  }
+  function startWhyTimer() { if (reduce || whyManual) return; whyTimer = setInterval(function () { whySelect((whyCur + 1) % WHY.length, false); }, 5000); }
+  function enterWhy() { buildWhy(); whyManual = false; whyCur = 0; setWhy(0); markWhy(0); startWhyTimer(); }
+
+  /* ---------- floor visual ---------- */
+  var FLOOR_FROM = 6250, FLOOR_TO = 840, TRACK_MAX = 145, VAL_MAX = 6500;
+  function hpx(v) { return Math.max(14, v / VAL_MAX * TRACK_MAX); }
+  function enterFloor() {
+    var bar = document.getElementById("fbar"), num = document.getElementById("floorNum"), hold = document.getElementById("fhold");
+    bar.classList.remove("held"); hold.classList.remove("on");
+    if (reduce) { bar.style.height = hpx(FLOOR_TO) + "px"; num.textContent = money(FLOOR_TO); hold.classList.add("on"); return; }
+    bar.style.height = hpx(FLOOR_FROM) + "px"; num.textContent = money(FLOOR_FROM);
+    var dur = 1500, t0 = performance.now();
+    function ease(t) { return 1 - Math.pow(1 - t, 3); }
+    function tick(now) {
+      var t = Math.min(1, (now - t0) / dur), e = ease(t), v = FLOOR_FROM + (FLOOR_TO - FLOOR_FROM) * e;
+      bar.style.height = hpx(v) + "px"; num.textContent = money(v);
+      if (t < 1) requestAnimationFrame(tick); else { bar.classList.add("held"); hold.classList.add("on"); }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- money model ---------- */
+  var MODEL = { rent: 3600, collin: 4440, michel: 5410 };
+  var stm = { scn: "both", cc: 2500, shown: 0 };
+  var elLeft = document.getElementById("leftover"), elVerdict = document.getElementById("verdict"), elGauge = document.getElementById("gauge"), elNote = document.getElementById("mnote"),
+      rowMichel = document.getElementById("rowMichel"), rowChild = document.getElementById("rowChild"), childBox = document.getElementById("childBox"),
+      vChild = document.getElementById("vChild"), ccOut = document.getElementById("ccOut"), ccRange = document.getElementById("ccRange"),
+      segThumb = document.getElementById("segThumb"), segBtns = Array.prototype.slice.call(document.querySelectorAll(".seg button"));
+  var NOTES = {
+    both: "With both incomes, after housing there is room to live on and still save each month.",
+    floor: "On my teaching salary alone the month is tight, and it still covers what has to be covered, the floor that matters most.",
+    child: "With a child, saving slows for a while, and even after the cost of care the month stays workable rather than tight."
+  };
+  function compute() {
+    var inc, cc = 0;
+    if (stm.scn === "both") inc = MODEL.collin + MODEL.michel;
+    else if (stm.scn === "floor") inc = MODEL.collin;
+    else { inc = MODEL.collin + MODEL.michel; cc = stm.cc; }
+    return { inc: inc, left: inc - MODEL.rent - cc };
+  }
+  function render(animate) {
+    var r = compute(), tight = r.left < 2000;
+    rowMichel.classList.toggle("hide", stm.scn === "floor");
+    rowChild.classList.toggle("hide", stm.scn !== "child");
+    childBox.classList.toggle("hide", stm.scn !== "child");
+    animEl(elLeft, animate ? 0 : stm.shown, r.left, 700, money); stm.shown = r.left;
+    elLeft.classList.toggle("tight", tight); elVerdict.classList.toggle("tight", tight); elGauge.classList.toggle("tight", tight);
+    elVerdict.textContent = stm.scn === "both" ? "Comfortable, with room to set money aside." : stm.scn === "floor" ? "Tight, and it holds." : "Comfortable, with saving that slows for a while.";
+    elGauge.style.width = Math.max(8, Math.min(100, r.left / r.inc * 100)) + "%";
+    elNote.textContent = NOTES[stm.scn];
+    if (stm.scn === "child") vChild.textContent = "-$" + stm.cc.toLocaleString("en-US");
+  }
+  function enterModel() { render(true); }
+  segBtns.forEach(function (btn, i) {
+    btn.addEventListener("click", function () {
+      segBtns.forEach(function (b) { b.setAttribute("aria-selected", "false"); });
+      btn.setAttribute("aria-selected", "true"); stm.scn = btn.getAttribute("data-scn");
+      segThumb.style.transform = "translateX(" + (i * 100) + "%)"; render(false);
+    });
+  });
+  function setFill() { var p = (ccRange.value - ccRange.min) / (ccRange.max - ccRange.min) * 100; ccRange.style.setProperty("--fill", p + "%"); }
+  ccRange.addEventListener("input", function () {
+    stm.cc = parseInt(ccRange.value, 10);
+    ccOut.textContent = "$" + stm.cc.toLocaleString("en-US") + " / month";
+    ccRange.setAttribute("aria-valuetext", "$" + stm.cc.toLocaleString("en-US") + " per month");
+    setFill(); render(false);
+  });
+  setFill();
+
+  /* ---------- chart ---------- */
+  var DATA = [[1,79000],[5,95000],[10,110000],[15,120000],[20,130000],[25,140000],[30,150000]];
+  var X0 = 76, X1 = 838, Y0 = 366, Y1 = 60, xMin = 1, xMax = 30, yMin = 70000, yMax = 156000;
+  function sx(x) { return X0 + (x - xMin) / (xMax - xMin) * (X1 - X0); }
+  function sy(y) { return Y0 + (y - yMin) / (yMax - yMin) * (Y1 - Y0); }
+  var pts = DATA.map(function (d) { return [sx(d[0]), sy(d[1])]; });
+  function smooth(p) {
+    var d = "M" + p[0][0] + "," + p[0][1];
+    for (var i = 0; i < p.length - 1; i++) {
+      var p0 = p[i ? i - 1 : 0], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2 < p.length ? i + 2 : i + 1];
+      d += "C" + (p1[0] + (p2[0] - p0[0]) / 6) + "," + (p1[1] + (p2[1] - p0[1]) / 6) + " " + (p2[0] - (p3[0] - p1[0]) / 6) + "," + (p2[1] - (p3[1] - p1[1]) / 6) + " " + p2[0] + "," + p2[1];
+    }
+    return d;
+  }
+  var lineD = smooth(pts), lineEl = document.getElementById("cLine"), areaEl = document.getElementById("cArea");
+  lineEl.setAttribute("d", lineD);
+  areaEl.setAttribute("d", lineD + " L" + X1 + "," + Y0 + " L" + X0 + "," + Y0 + " Z");
+  var SVGNS = "http://www.w3.org/2000/svg", gl = document.getElementById("gridlines");
+  [80000, 110000, 140000].forEach(function (yv) {
+    var y = sy(yv);
+    var ln = document.createElementNS(SVGNS, "line");
+    ln.setAttribute("class", "grid-l"); ln.setAttribute("x1", X0); ln.setAttribute("x2", X1); ln.setAttribute("y1", y); ln.setAttribute("y2", y); gl.appendChild(ln);
+    var t2 = document.createElementNS(SVGNS, "text");
+    t2.setAttribute("class", "axis"); t2.setAttribute("x", X0 - 12); t2.setAttribute("y", y + 5); t2.setAttribute("text-anchor", "end"); t2.textContent = "$" + (yv / 1000) + "k"; gl.appendChild(t2);
+  });
+  [[1, "Year 1"], [15, "Year 15"], [30, "Year 30"]].forEach(function (m) {
+    var t = document.createElementNS(SVGNS, "text");
+    t.setAttribute("class", "axis"); t.setAttribute("x", sx(m[0])); t.setAttribute("y", Y0 + 32); t.setAttribute("text-anchor", "middle"); t.textContent = m[1]; gl.appendChild(t);
+  });
+  var dotsG = document.getElementById("cDots"), comet = document.getElementById("comet");
+  var milestones = [[1, 79000, "$79k"], [15, 120000, "$120k"], [30, 150000, "$150k+"]], dotNodes = [];
+  milestones.forEach(function (m) {
+    var cx = sx(m[0]), cy = sy(m[1]);
+    var c = document.createElementNS(SVGNS, "circle");
+    c.setAttribute("class", "dot"); c.setAttribute("cx", cx); c.setAttribute("cy", cy); c.setAttribute("r", 6);
+    c.setAttribute("tabindex", "0"); c.setAttribute("role", "img"); c.setAttribute("aria-label", m[2] + " in year " + m[0]); c.style.opacity = 0; dotsG.appendChild(c);
+    var t = document.createElementNS(SVGNS, "text");
+    t.setAttribute("class", "dotlab"); t.setAttribute("x", m[0] === 30 ? cx - 4 : cx); t.setAttribute("y", cy - 18);
+    t.setAttribute("text-anchor", m[0] === 30 ? "end" : (m[0] === 1 ? "start" : "middle")); t.textContent = m[2]; t.style.opacity = 0; dotsG.appendChild(t);
+    dotNodes.push([c, t, cx]);
+  });
+  function drawChart() {
+    var len = lineEl.getTotalLength();
+    dotNodes.forEach(function (n) { n[0].style.opacity = 0; n[1].style.opacity = 0; });
+    areaEl.classList.remove("on");
+    if (reduce) { lineEl.style.strokeDasharray = "none"; areaEl.classList.add("on"); dotNodes.forEach(function (n) { n[0].style.opacity = 1; n[1].style.opacity = 1; }); runCaps(); return; }
+    lineEl.style.transition = "none"; lineEl.style.strokeDasharray = len; lineEl.style.strokeDashoffset = len;
+    void lineEl.getBoundingClientRect();
+    var dur = 1900, t0 = performance.now();
+    lineEl.style.transition = "stroke-dashoffset " + dur + "ms cubic-bezier(0.22,1,0.36,1)"; lineEl.style.strokeDashoffset = "0";
+    comet.style.opacity = 1;
+    function run(now) {
+      var t = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - t, 3), pt = lineEl.getPointAtLength(len * e);
+      comet.setAttribute("cx", pt.x); comet.setAttribute("cy", pt.y);
+      if (t < 1) requestAnimationFrame(run); else comet.style.opacity = 0;
+    }
+    requestAnimationFrame(run);
+    dotNodes.forEach(function (n) {
+      var frac = (n[2] - X0) / (X1 - X0);
+      setTimeout(function () { n[0].style.transition = "opacity .4s ease"; n[1].style.transition = "opacity .4s ease"; n[0].style.opacity = 1; n[1].style.opacity = 1; }, 300 + frac * dur);
+    });
+    setTimeout(function () { areaEl.classList.add("on"); }, dur * 0.55);
+    runCaps();
+  }
+  function runCaps() {
+    animEl(document.getElementById("capSal"), 0, 3.8, 1500, function (v) { return "$" + v.toFixed(1) + "M"; });
+    animEl(document.getElementById("capPen"), 0, 700, 1500, function (v) { return "$" + Math.round(v) + "k"; });
+    animEl(document.getElementById("capHea"), 0, 375, 1500, function (v) { return "$" + Math.round(v) + "k"; });
+    animEl(document.getElementById("capTot"), 0, 4.9, 1700, function (v) { return "$" + v.toFixed(1) + "M"; });
+  }
+
+  /* ---------- pension calculator ---------- */
+  var pyR = document.getElementById("pyRange"), pcR = document.getElementById("pcRange"),
+      penYears = document.getElementById("penYears"), penComp = document.getElementById("penComp"),
+      penPct = document.getElementById("penPct"), penAnnual = document.getElementById("penAnnual"),
+      penMonthly = document.getElementById("penMonthly"), penGauge = document.getElementById("penGauge");
+  var penShown = 164160, penWired = false;
+  function rangeFill(el) { var p = (el.value - el.min) / (el.max - el.min) * 100; el.style.setProperty("--fill", p + "%"); }
+  function renderPension(animate) {
+    var yrs = parseInt(pyR.value, 10), comp = parseInt(pcR.value, 10), factor = 0.024;
+    var pct = yrs * factor * 100, annual = yrs * factor * comp, monthly = annual / 12;
+    penYears.textContent = yrs;
+    penComp.textContent = money(comp);
+    penPct.textContent = pct.toFixed(1) + "% of final pay";
+    animEl(penAnnual, animate ? 0 : penShown, annual, 700, money); penShown = annual;
+    penMonthly.textContent = "About " + money(monthly) + " / month, guaranteed for life";
+    penGauge.style.width = Math.max(8, Math.min(100, pct)) + "%";
+  }
+  function enterPension() {
+    if (!penWired) {
+      penWired = true;
+      pyR.addEventListener("input", function () { rangeFill(pyR); renderPension(false); });
+      pcR.addEventListener("input", function () { rangeFill(pcR); renderPension(false); });
+    }
+    rangeFill(pyR); rangeFill(pcR); renderPension(true);
+  }
+
+  /* ---------- retirement scenario + 4% rule ---------- */
+  function enterRetire() { animEl(document.getElementById("retAnnual"), 0, 164000, 1400, money); }
+  function enterWorth() { animEl(document.getElementById("worthNum"), 0, 4.2, 1500, function (v) { return "$" + v.toFixed(1) + "M"; }); }
+
+  /* accordion */
+  document.querySelectorAll(".acc-q").forEach(function (q) {
+    q.addEventListener("click", function () {
+      var item = q.parentElement, open = item.classList.contains("open"), acc = item.parentElement;
+      acc.querySelectorAll(".acc-item").forEach(function (it) { it.classList.remove("open"); it.querySelector(".acc-q").setAttribute("aria-expanded", "false"); });
+      if (!open) { item.classList.add("open"); q.setAttribute("aria-expanded", "true"); }
+    });
+  });
+
+  updateChrome(); setActive(0);
+  setTimeout(function () { if (hint) hint.style.opacity = "0"; }, 6500);
+})();
+</script>
+</body>
+</html>
